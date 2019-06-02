@@ -151,7 +151,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="block.cpp" />
+    <ClCompile Include="obstacle.cpp" />
     <ClCompile Include="robot-algorithm-simulator.cpp" />
+    <ClCompile Include="initial-data-collection.cpp" />
+    <ClCompile Include="robot.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="block.h" />
+    <ClInclude Include="obstacle.h" />
+    <ClInclude Include="rmas6219.h" />
+    <ClInclude Include="robot.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
