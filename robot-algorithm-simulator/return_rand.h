@@ -2,12 +2,13 @@
 #ifndef RETURN_RAND_H
 #define RETURN_RAND_H
 
+#include "rmas6219.h"
 #include <cstdlib>
 #include <ctime>
 
-template <typename var_type> var_type return_rand(var_type max, var_type min) {
+double return_rand(int max, double min) {
 	srand(time(0));
-	var_type random_num = (rand() % max) + min;
+	double random_num = (rand() % max) + min;
 	return random_num;
 }
 

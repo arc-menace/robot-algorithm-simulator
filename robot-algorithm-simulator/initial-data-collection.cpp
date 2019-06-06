@@ -16,7 +16,10 @@ using std::vector;
 using std::numeric_limits;
 using std::streamsize;
 
-
+//Constants:
+#define MIN_DISTANCE 0
+#define DEFAULT_START 48
+#define NOT_USING_EXISTING_DATA 'N'
 
 void collect_init_data(Robot Crunchy){
 	
@@ -37,7 +40,7 @@ void collect_init_data(Robot Crunchy){
 		cout << "The map is set at " << board_size << " inches x " << board_size << " inches. Would you like to change this value? (Y/N)" << endl;
 		cout << "Choice: ";
 		//cin >> answer;
-		answer = read_input <char>(false, { 'Y', 'y', 'N', 'n' });
+		answer = read_input <char>(false, {'Y', 'y', 'N', 'n'});
 		while (answer != 'Y' && answer != 'y' && answer != 'N' && answer != 'n') {
 			cout << "Error with input. Please try again: ";
 			cin.clear();

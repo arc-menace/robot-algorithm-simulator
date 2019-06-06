@@ -151,12 +151,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="block.cpp" />
-    <ClCompile Include="obstacle.cpp" />
-    <ClCompile Include="read_input.cpp" />
     <ClCompile Include="robot-algorithm-simulator.cpp" />
     <ClCompile Include="initial-data-collection.cpp" />
-    <ClCompile Include="robot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
