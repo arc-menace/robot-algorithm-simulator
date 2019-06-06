@@ -30,6 +30,9 @@
     <ClCompile Include="robot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="read_input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rmas6219.h">
@@ -42,6 +45,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="block.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="return_rand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="read_input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

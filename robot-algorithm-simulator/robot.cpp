@@ -1,11 +1,5 @@
 #include "robot.h"
-
-Robot::Robot(double current_x = DEFAULT_START, double current_y = DEFAULT_START) {
-	x = current_x;
-	y = current_y;
-	starting_x = x;
-	starting_y = y;
-}
+#include "rmas6219.h"
 
 void Robot::rotate_cw(double num_degrees) { //Rotate Clockwise
 	orientation -= num_degrees;

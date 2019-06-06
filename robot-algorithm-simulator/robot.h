@@ -10,15 +10,20 @@ class Robot {
 public:
 
 	//Default position in the bottom left corner of the map (0,0)
-	Robot(double current_x = DEFAULT_START, double current_y = DEFAULT_START);
+	Robot(double current_x = DEFAULT_START, double current_y = DEFAULT_START) { //Unknown parameter change issue when constructor
+		x = current_x;															//is placed in the .cpp file.
+		y = current_y;
+		starting_x = x;
+		starting_y = y;
+	}
 
-	std::vector<Obstacle> known_obstacles; //Robot Only knows the locations of obstacles which have come within its sensing distance.
+	//std::vector<Obstacle> known_obstacles; //Robot Only knows the locations of obstacles which have come within its sensing distance.
 
 	void rotate_cw(double num_degrees); //Rotate Clockwise
 	void rotate_ccw(double num_degrees); //Rotate Counter-Clockwise
 	void forward(double num_inches); // Move Forward
 	void backward(double num_inches); //Move Backward
-
+	
 	//Where the Robot is and where it is going
 	double x = 48; //Full map is 96" square. (48,48) is center
 	double y = 48;

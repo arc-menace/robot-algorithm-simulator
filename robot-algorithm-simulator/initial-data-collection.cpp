@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <cstdlib>
+#include "read_input.h"
 
 using std::cout;
 using std::cin;
@@ -20,6 +21,8 @@ using std::streamsize;
 void collect_init_data(Robot Crunchy){
 	
 	int board_size = MIN_DISTANCE; //Map area of 0 by default
+	//This value is used to determine if there is existing map data in save file or not.
+
 
 	cout << "Checking for existing state file." << endl;
 	ifstream inf("mapData.txt"); //Create Input stream handler
@@ -33,7 +36,8 @@ void collect_init_data(Robot Crunchy){
 		inf >> board_size; //Retrieve existing map size and confirm with user whether to use it or replace it
 		cout << "The map is set at " << board_size << " inches x " << board_size << " inches. Would you like to change this value? (Y/N)" << endl;
 		cout << "Choice: ";
-		cin >> answer;
+		//cin >> answer;
+		answer = read_input <char>(false, { 'Y', 'y', 'N', 'n' });
 		while (answer != 'Y' && answer != 'y' && answer != 'N' && answer != 'n') {
 			cout << "Error with input. Please try again: ";
 			cin.clear();
@@ -46,6 +50,7 @@ void collect_init_data(Robot Crunchy){
 	if (board_size == MIN_DISTANCE || answer == 'Y' || answer == 'y') {
 		cout << "Please enter the length of one of the sides of the square map in inches: ";
 		cin >> board_size;
+
 		//Input error handling
 		while (cin.fail())
 		{
@@ -82,7 +87,7 @@ void collect_init_data(Robot Crunchy){
 	Crunchy.y = starting_y;
 
 	cout << "Please enter the width and length of the robot in inches: ";
-	int robot_length, robot_width;
+	float robot_length, robot_width;
 	cin >> robot_length >> robot_width;
 	while (cin.fail()) {
 		cin.clear();
@@ -130,7 +135,7 @@ void collect_init_data(Robot Crunchy){
 			y = 0;
 		}
 		cout << "There are " << obstacles.size() - 1 << " Existing obstacles are located at ";
-		for (int i = 0; i < obstacles.size() - 1; i++) {
+		for (unsigned int i = 0; i < obstacles.size() - 1; i++) {
 			//There is a bug in the input which adds the last obstacle to the vector twice.
 			//This is solved by simply not printing the last piece of the vector
 			cout << "(" << obstacles[i].stated_x << "," << obstacles[i].stated_y << ") ";

@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="block.cpp" />
     <ClCompile Include="obstacle.cpp" />
+    <ClCompile Include="read_input.cpp" />
     <ClCompile Include="robot-algorithm-simulator.cpp" />
     <ClCompile Include="initial-data-collection.cpp" />
     <ClCompile Include="robot.cpp" />
@@ -160,6 +161,8 @@
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="obstacle.h" />
+    <ClInclude Include="read_input.h" />
+    <ClInclude Include="return_rand.h" />
     <ClInclude Include="rmas6219.h" />
     <ClInclude Include="robot.h" />
   </ItemGroup>
