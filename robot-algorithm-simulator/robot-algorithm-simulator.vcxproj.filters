@@ -21,13 +21,13 @@
     <ClCompile Include="initial-data-collection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="robot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="obstacle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="block.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="robot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
