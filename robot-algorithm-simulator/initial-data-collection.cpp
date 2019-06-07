@@ -21,7 +21,7 @@ using std::streamsize;
 
 //Need to find a way to get the map variable and block/obstalce objects out of this function.
 
-Robot collect_init_data() {
+Robot define_robot() {
 	//Initialize Map Data: 
 	//=================================================================
 

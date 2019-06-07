@@ -1,8 +1,8 @@
 #include "rmas6219.h"
 
-Robot collect_init_data();
+Robot define_robot();
 
 int main() {
-	Robot Crunchy = collect_init_data();
+	Robot Crunchy = define_robot();
 	return 0;
 }
