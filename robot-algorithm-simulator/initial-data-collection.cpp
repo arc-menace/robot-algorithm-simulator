@@ -1,10 +1,8 @@
 #include "rmas6219.h"
-#include <fstream>
-#include <vector>
-#include <string>
 #include <iostream>
-#include <cstdlib>
-#include "read_input.h"
+#include <fstream>
+#include <string>
+#include <vector>
 
 using std::cout;
 using std::cin;
@@ -17,52 +15,41 @@ using std::numeric_limits;
 using std::streamsize;
 
 //Constants:
-#define MIN_DISTANCE 0
+#define MIN_MAP_DISTANCE 0
 #define DEFAULT_START 48
 #define NOT_USING_EXISTING_DATA 'N'
 
-void collect_init_data(Robot Crunchy){
-	
-	int board_size = MIN_DISTANCE; //Map area of 0 by default
-	//This value is used to determine if there is existing map data in save file or not.
+//Need to find a way to get the map variable and block/obstalce objects out of this function.
 
+Robot collect_init_data() {
+	//Initialize Map Data: 
+	//=================================================================
+
+	int board_size = MIN_MAP_DISTANCE; //Map area of 0 by default
+									   //This value is used to determine if there is 
+								       //existing map data in save file or not.
+
+	char answer;
 
 	cout << "Checking for existing state file." << endl;
 	ifstream inf("mapData.txt"); //Create Input stream handler
 
-	char answer = NOT_USING_EXISTING_DATA;
 	if (!inf) { //If there is an error opening the file or the file does not exist
-		cout << "Error with opening file. Previous data does not exist or has been moved.";
+		cout << "Error with opening file. Previous data does not exist or has been moved." << endl;
 		inf.close();
 	}
 	else {
 		inf >> board_size; //Retrieve existing map size and confirm with user whether to use it or replace it
 		cout << "The map is set at " << board_size << " inches x " << board_size << " inches. Would you like to change this value? (Y/N)" << endl;
 		cout << "Choice: ";
-		//cin >> answer;
-		answer = read_input <char>(false, {'Y', 'y', 'N', 'n'});
-		while (answer != 'Y' && answer != 'y' && answer != 'N' && answer != 'n') {
-			cout << "Error with input. Please try again: ";
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			cin >> answer;
-		}
+		answer = read_input<char>(true);
 		cout << endl;
 		inf.close(); //Allows ofstream to be used
 	}
-	if (board_size == MIN_DISTANCE || answer == 'Y' || answer == 'y') {
-		cout << "Please enter the length of one of the sides of the square map in inches: ";
-		cin >> board_size;
 
-		//Input error handling
-		while (cin.fail())
-		{
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			cout << "Error with input. Please Try Again: ";
-			cin >> board_size;
-		}
-		cout << endl;
+	if (board_size == MIN_MAP_DISTANCE || answer == 'Y' || answer == 'y') {
+		cout << "Please enter the length of one of the sides of the square map in inches: ";
+		board_size = read_input<int>();
 
 		//Output new map size to .txt file to be retrieved the next time the program is run
 		ofstream outf("mapData.txt");
@@ -70,13 +57,18 @@ void collect_init_data(Robot Crunchy){
 		outf.close();
 	}
 
+	//=================================================================
+
+	//Initiallize Robot Data
+	//=================================================================
+
 	//Get starting position of the robot
 	cout << "Please enter the starting position of the robot (Ex. x y): ";
 	int starting_x, starting_y;
 	cin.clear();
 	cin >> starting_x >> starting_y;
 	//Input error handling:
-	while (cin.fail() || starting_x > board_size || starting_y > board_size)
+	while (cin.fail() || starting_x > board_size || starting_y > board_size) //Works but could be cleaned up.
 	{
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -84,6 +76,14 @@ void collect_init_data(Robot Crunchy){
 		cin >> starting_x >> starting_y;
 	}
 	cout << endl;
+
+	Robot Crunchy(starting_x, starting_y);
+
+	return Crunchy;
+}
+
+/*
+	
 
 	//Define robot parameters
 	Crunchy.x = starting_x;
@@ -195,3 +195,4 @@ void collect_init_data(Robot Crunchy){
 	}
 	obstacles.pop_back();
 }
+*/

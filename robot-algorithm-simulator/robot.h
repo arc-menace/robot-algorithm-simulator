@@ -48,6 +48,14 @@ public:
 		orientation = direction; 
 	}
 
+	void set_sensing_distance(double sense_dist) {
+		sensing_distance = sense_dist;
+	}
+
+	void set_wheel_diameter(double diameter) {
+		wheel_diameter = diameter;
+	}
+
 	//Where the Robot is going
 	double next_x = 0;
 	double next_y = 0;

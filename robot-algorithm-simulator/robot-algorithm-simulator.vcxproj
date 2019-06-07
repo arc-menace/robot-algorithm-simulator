@@ -158,7 +158,6 @@
     <ClInclude Include="block.h" />
     <ClInclude Include="obstacle.h" />
     <ClInclude Include="read_input.h" />
-    <ClInclude Include="return_rand.h" />
     <ClInclude Include="rmas6219.h" />
     <ClInclude Include="robot.h" />
   </ItemGroup>

@@ -1,8 +1,8 @@
 #include "rmas6219.h"
-#include <iostream>
-#include <vector>
 
+Robot collect_init_data();
 
 int main() {
+	Robot Crunchy = collect_init_data();
 	return 0;
 }

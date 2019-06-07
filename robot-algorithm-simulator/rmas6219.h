@@ -6,9 +6,6 @@
 #include "robot.h"
 #include "obstacle.h"
 #include "block.h"
-
-//Function Header Files
 #include "read_input.h"
-#include "return_rand.h"
 
 #endif RMAS6219_H
