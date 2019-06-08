@@ -28,4 +28,4 @@ public:
 	double actual_y = stated_y + return_rand(6, -6.0);
 };
 
-#endif BLOCK_H
+#endif

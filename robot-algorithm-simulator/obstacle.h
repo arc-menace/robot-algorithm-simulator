@@ -15,4 +15,4 @@ public:
 	}
 };
 
-#endif OBSTACLE_H
+#endif

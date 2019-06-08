@@ -43,4 +43,4 @@ failed_input:
 	return input;
 }
 
-#endif READ_INPUT_H
+#endif

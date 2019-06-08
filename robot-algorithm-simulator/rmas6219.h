@@ -8,4 +8,4 @@
 #include "block.h"
 #include "read_input.h"
 
-#endif RMAS6219_H
+#endif

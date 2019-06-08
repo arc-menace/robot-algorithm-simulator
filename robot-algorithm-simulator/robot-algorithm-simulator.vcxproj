@@ -152,14 +152,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="define_blocks.cpp" />
+    <ClCompile Include="define_map.cpp" />
     <ClCompile Include="define_mothership.cpp" />
     <ClCompile Include="define_obstacles.cpp" />
     <ClCompile Include="define_robot.cpp" />
+    <ClCompile Include="global.cpp" />
     <ClCompile Include="robot-algorithm-simulator.cpp" />
     <ClCompile Include="initial-data-collection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
+    <ClInclude Include="global.h" />
     <ClInclude Include="obstacle.h" />
     <ClInclude Include="read_input.h" />
     <ClInclude Include="rmas6219.h" />
