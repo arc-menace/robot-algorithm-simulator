@@ -27,7 +27,7 @@ failed_input: //If there is a problem with the input, restart the function
 		cin >> input; //Take input again
 	}
 
-	char exclusive_answers{ 'Y', 'y', 'N', 'n' }; //If the question is yes or no then the only input you want are these chars
+	vector <char> exclusive_answers{ 'Y', 'y', 'N', 'n' }; //If the question is yes or no then the only input you want are these chars
 
 	bool input_is_forbidden = true; //If the input is not one of the chars in the array exclusive_answers
 

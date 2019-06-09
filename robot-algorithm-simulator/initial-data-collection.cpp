@@ -30,57 +30,7 @@ Robot define_robot() {
 	//Initiallize Robot Data
 	//=================================================================
 
-	//Get starting position of the robot
-	cout << "Please enter the starting position of the robot (Ex. x y): ";
-	int starting_x, starting_y;
-	cin.clear();
-	cin >> starting_x >> starting_y;
-	//Input error handling:
-	while (cin.fail() || starting_x > board_size || starting_y > board_size) //Works but could be cleaned up.
-	{
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		cout << "Error with input. Please try again: ";
-		cin >> starting_x >> starting_y;
-	}
-	cout << endl;
-
-	Robot Crunchy(starting_x, starting_y);
-
-	return Crunchy;
-}	
-
-	//Define robot parameters
-	Crunchy.x = starting_x;
-	Crunchy.y = starting_y;
-
-	cout << "Please enter the width and length of the robot in inches: ";
-	float robot_length, robot_width;
-	cin >> robot_length >> robot_width;
-	while (cin.fail()) {
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		cout << "Error with input. Please try again: ";
-		cin >> robot_length >> robot_width;
-	}
-	cout << endl;
-
-	Crunchy.width = robot_width;
-	Crunchy.length = robot_length;
-
-	cout << "How close to an obstacle does the robot need to be in order to detect it?\nAnswer: ";
-	double sensing;
-	cin >> sensing;
-	while (cin.fail())
-	{
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		cout << "Error with input. Please try again: ";
-		cin >> sensing;
-	}
-	cout << endl;
-
-	Crunchy.sensing_distance = sensing;
+	
 
 	cout << "Checking for existing obstacle data." << endl;
 	ifstream infile("obstacles.txt"); //Create Input stream handler

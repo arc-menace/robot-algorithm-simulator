@@ -4,6 +4,7 @@
 
 #include "rmas6219.h"
 #include <vector>
+#include <math.h> //for sin() and cos()
 
 //Robot class
 class Robot {
@@ -56,13 +57,14 @@ public:
 		wheel_diameter = diameter;
 	}
 
+	void set_next_x_y(double a, double b) {
+		next_x = a;
+		next_y = b;
+	}
+
 	//Where the Robot is going
 	double next_x = 0;
-	double next_y = 0;
-
-	//Robot must remember where it started to return there at the end
-	double starting_x = 48;
-	double starting_y = 48;
+	double next_y = 0;	
 
 	//Size of the robot in inches
 	float width = 12;
@@ -78,6 +80,10 @@ private:
 							 //0 = East, 90 = North, 180 = West and 270 = South
 	double x = 48; //Full map is 96" square. (48,48) is center
 	double y = 48;
+
+	//Robot must remember where it started to return there at the end
+	double starting_x = 48;
+	double starting_y = 48;
 };
 
 

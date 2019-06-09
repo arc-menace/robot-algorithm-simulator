@@ -41,5 +41,6 @@ void define_map() {
 		ofstream outf("mapData.txt");
 		outf << board_size << endl;
 		outf.close();
+		cout << endl;
 	}
 }
