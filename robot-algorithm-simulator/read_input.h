@@ -37,7 +37,7 @@ failed_input: //If there is a problem with the input, restart the function
 				input_is_forbidden = false;		 //then it is not_forbidden
 			}
 		}
-		if (input_is_forbidden) { //If the input is not one of the accepted answers do the same stuff as aboe
+		if (input_is_forbidden) { //If the input is not one of the accepted answers do the same stuff as above
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			cout << "Error with input. Please Try Again: ";
