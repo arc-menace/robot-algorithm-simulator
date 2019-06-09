@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
+    <ClInclude Include="functions.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="obstacle.h" />
     <ClInclude Include="read_input.h" />

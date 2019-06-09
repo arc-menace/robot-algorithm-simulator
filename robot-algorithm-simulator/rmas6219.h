@@ -8,4 +8,10 @@
 #include "block.h"
 #include "read_input.h"
 
+//Global Variables
+#include "global.h"
+
+//Functions
+#include "functions.h"
+
 #endif

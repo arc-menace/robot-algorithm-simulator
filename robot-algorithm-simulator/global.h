@@ -2,6 +2,6 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-extern int board_size;
+extern double board_size;
 
 #endif

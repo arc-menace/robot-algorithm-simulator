@@ -1,3 +1,4 @@
+/*
 #include "rmas6219.h"
 #include <iostream>
 #include <fstream>
@@ -47,10 +48,7 @@ Robot define_robot() {
 	Robot Crunchy(starting_x, starting_y);
 
 	return Crunchy;
-}
-
-/*
-	
+}	
 
 	//Define robot parameters
 	Crunchy.x = starting_x;

@@ -11,13 +11,10 @@ using std::ifstream;
 using std::numeric_limits;
 using std::streamsize;
 
+
 void define_map() {
-	//Initialize Map Data: 
-	//=================================================================
-
-	
-
 	char answer;
+	bool file_failed = false;
 
 	cout << "Checking for existing state file." << endl;
 	ifstream inf("mapData.txt"); //Create Input stream handler
@@ -25,6 +22,7 @@ void define_map() {
 	if (!inf) { //If there is an error opening the file or the file does not exist
 		cout << "Error with opening file. Previous data does not exist or has been moved." << endl;
 		inf.close();
+		file_failed = true;
 	}
 	else {
 		inf >> board_size; //Retrieve existing map size and confirm with user whether to use it or replace it
@@ -35,7 +33,7 @@ void define_map() {
 		inf.close(); //Allows ofstream to be used
 	}
 
-	if (board_size == MIN_MAP_LENGTH || answer == 'Y' || answer == 'y') {
+	if (file_failed || answer == 'Y' || answer == 'y') {
 		cout << "Please enter the length of one of the sides of the square map in inches: ";
 		board_size = read_input<int>();
 
