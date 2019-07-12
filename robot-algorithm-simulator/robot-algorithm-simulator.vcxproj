@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="robot-algorithm-simulator.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="scoreboard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
