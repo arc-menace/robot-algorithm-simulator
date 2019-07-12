@@ -1,0 +1,33 @@
+What I know I need to do but don't want to do right now:
+robot.h:
+ - Add logging functions
+
+block.h:
+ - Add logging Functions
+
+obstacle.h:
+ - Function to set random position
+ - Add logging functions
+ 
+map.h:
+ - Add logging functions
+ - Check to make sure that default values are assigned upon object creation
+ 
+mothership.h
+ - create file
+ - create class 
+ - define logic for position based upon dimensions in rules
+ - add logging functions
+ - add vector to hold blocks
+
+ Redo all the definition funtions for changing settings
+ Allow for custom settings to be saved or loaded
+ Allow to leave as default and skip a particular setting
+
+ The big stuff to do:
+ Create Environment in main to hold all objects and track stuff
+
+ Logging Class
+
+ Cinder stuff
+
