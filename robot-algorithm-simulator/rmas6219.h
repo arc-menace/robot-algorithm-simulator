@@ -2,16 +2,18 @@
 #ifndef RMAS6219_H
 #define RMAS6219_H
 
-//Class Header Files:
-#include "robot.h"
-#include "obstacle.h"
-#include "block.h"
-#include "read_input.h"
+using namespace std;
 
-//Global Variables
+//Global Variables:
 #include "global.h"
 
-//Functions
-#include "functions.h"
+//External Libraries:
+#include <vector>
+#include <math.h> //for sin() and cos() in Robot movement functions
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <ctime>
+#include <cstdlib>
 
 #endif
