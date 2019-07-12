@@ -24,7 +24,7 @@ void menu() {
 	case 3: //Reruns all functions but enables advanced options parameter
 		
 	case 4: //Resets core variables to global constants in global.h
-		
+		return;
 	}
 }
 
