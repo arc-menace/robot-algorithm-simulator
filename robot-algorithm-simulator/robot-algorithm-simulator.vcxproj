@@ -151,16 +151,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="robot-algorithm-simulator.cpp" />
-    <ClCompile Include="menu.cpp" />
-    <ClCompile Include="scoreboard.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
-    <ClInclude Include="event.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="obstacle.h" />
-    <ClInclude Include="read_input.h" />
     <ClInclude Include="rmas6219.h" />
     <ClInclude Include="robot.h" />
   </ItemGroup>

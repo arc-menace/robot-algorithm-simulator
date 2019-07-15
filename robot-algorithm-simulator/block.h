@@ -2,7 +2,8 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include "rmas6219.h"
+#include <cstdlib>
+#include <time.h>
 
 namespace rmas {
 	class Block {
@@ -18,7 +19,7 @@ namespace rmas {
 
 		double return_rand(int max, double min) {
 			srand(time(0));
-			double random_num = (rand() % max) + min;
+			double random_num = rand() % max + min;
 			return random_num;
 		}
 

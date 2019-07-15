@@ -2,10 +2,11 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include "rmas6219.h"
 #include "block.h"
-
-using std::vector;
+#include <vector>
+#include <math.h> //for sin() and cos() in Robot movement functions
+#include <string>
+#include "global.h"
 
 namespace rmas {
 	//Robot class
@@ -56,6 +57,7 @@ namespace rmas {
 			if (direction > orientation) {
 				rotate_ccw(direction - orientation);
 			}
+
 		}
 
 		void rotate_cw(double num_degrees) { //Rotate Clockwise
@@ -64,6 +66,8 @@ namespace rmas {
 				orientation += 360; //Converts a negative number of degrees to positive 
 									//(Ex. -40 degrees = 320 degrees = -40 degrees + 360 degrees)
 			}
+			std::string message = "Rotated Clockwise " + std::to_string(num_degrees) + ". Robot oriented at " + std::to_string(orientation);
+				
 		}
 
 		void rotate_ccw(double num_degrees) { //Rotate CounterClockwise
