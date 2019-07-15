@@ -6,6 +6,7 @@
 #include <vector>
 #include <math.h> //for sin() and cos() in Robot movement functions
 #include <string>
+#include <iostream>
 #include "global.h"
 
 namespace rmas {
@@ -80,19 +81,19 @@ namespace rmas {
 
 		void forward(double num_inches) { //X and Y are the adjacent and opposite sides of a triangle 
 										  //with hypotenuse num_inches and theta orientation
-			y += num_inches * sin(orientation);
-			x += num_inches * cos(orientation);
+			y += num_inches * sin(orientation * convert_deg);
+			x += num_inches * cos(orientation * convert_deg);
 		}
 
 		void backward(double num_inches) { //Same math as forward movement except... backwards...
-			y -= num_inches * sin(orientation);
-			x -= num_inches * cos(orientation);
+			y -= num_inches * sin(orientation * convert_deg);
+			x -= num_inches * cos(orientation * convert_deg);
 		}
 
-		void right(double num_inches, bool mechanum = false) {
-			if (mechanum) {
-				x += num_inches * sin(orientation);
-				y += num_inches * cos(orientation);
+		void right(double num_inches) {
+			if (is_mechanum) {
+				x += num_inches * sin(orientation * convert_deg);
+				y += num_inches * cos(orientation * convert_deg);
 			}
 			else {
 				rotate_cw(90);
@@ -101,10 +102,10 @@ namespace rmas {
 			}
 		}
 
-		void left(double num_inches, bool mechanum = false) {
-			if (mechanum) {
-				x -= num_inches * sin(orientation);
-				y -= num_inches * cos(orientation);
+		void left(double num_inches) {
+			if (is_mechanum) {
+				x -= num_inches * sin(orientation * convert_deg);
+				y -= num_inches * cos(orientation * convert_deg);
 			}
 			else {
 				rotate_ccw(90);
@@ -164,6 +165,26 @@ namespace rmas {
 			}
 			starting_x = x;
 			starting_y = y;
+		}
+
+		void print_atts(bool advanced = false) {
+			std::cout << "Starting (X,Y): (" << starting_x << "," << starting_y << ")" << std::endl;
+			std::cout << "Current (X,Y): (" << x << "," << y << ")" << std::endl;
+			std::cout << "Orientation: " << orientation << char(248) << std::endl;
+			std::cout << "Robot width: " << width << " inches" << std::endl;
+			std::cout << "Robot length: " << length << " inches" << std::endl;
+			if (advanced) {
+				std::cout << "Robot can sense obstacles " << sensing_distance << " inches away and within " <<
+					sensing_angle << char(248) << std::endl;
+				std::cout << "Wheels are " << wheel_diameter << " inches in diameter" << std::endl;
+				std::cout << "There are " << blocks_on_robot.size() << " blocks currently on the robot" << std::endl;
+				std::string true_false = "false";
+				if (is_mechanum) {
+					true_false = "true";
+				}
+				std::cout << "Mechanum Drive: " << true_false << std::endl;
+			}
+			std::cout << std::endl;
 		}
 	};
 }

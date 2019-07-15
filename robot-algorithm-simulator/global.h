@@ -16,5 +16,6 @@
 #define MAX_SENSE_DIST 135.77
 #define MIN_SENSE_DIST 0.1
 #define MAX_WHEEL_DIAM 6.0
+const double convert_deg = 0.0174532925;
 
 #endif
