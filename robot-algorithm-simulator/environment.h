@@ -57,6 +57,8 @@ namespace rmas {
 			round_num = round_number;
 		}
 
+		Log<Event::Move> move_log;
+
 		//==============================================
 		//	Robot Movement Functions
 		//==============================================
@@ -74,7 +76,7 @@ namespace rmas {
 			if (direction > robot.orientation) {
 				rotate_ccw(direction - robot.orientation);
 			}
-			Event::Move move(index, robot);
+			move_log.add_event(Event::Move(index, robot));
 		}
 
 		void rotate_cw(double num_degrees) { //Rotate Clockwise
@@ -83,7 +85,7 @@ namespace rmas {
 				robot.orientation += 360; //Converts a negative number of degrees to positive 
 									//(Ex. -40 degrees = 320 degrees = -40 degrees + 360 degrees)
 			}
-			Event::Move move(index, robot);
+			move_log.add_event(Event::Move(index, robot));
 		}
 
 		void rotate_ccw(double num_degrees) { //Rotate CounterClockwise
@@ -93,33 +95,33 @@ namespace rmas {
 				robot.orientation -= 360; //Converts a number of degrees >= 360 back between 0 and 360 
 									//(Ex. 400 degrees = 40 degrees = 400 degrees - 360 degrees)
 			}
-			Event::Move move(index, robot);
+			move_log.add_event(Event::Move(index, robot));
 		}
 
 		void forward(double num_inches) { //X and Y are the adjacent and opposite sides of a triangle 
 										  //with hypotenuse num_inches and theta orientation
 			robot.y += num_inches * sin(robot.orientation * convert_deg);
 			robot.x += num_inches * cos(robot.orientation * convert_deg);
-			Event::Move move(index, robot);
+			move_log.add_event(Event::Move(index, robot));
 		}
 
 		void backward(double num_inches) { //Same math as forward movement except... backwards...
 			robot.y -= num_inches * sin(robot.orientation * convert_deg);
 			robot.x -= num_inches * cos(robot.orientation * convert_deg);
-			Event::Move move(index, robot);
+			move_log.add_event(Event::Move(index, robot));
 		}
 
 		void right(double num_inches) {
 			if (robot.is_mechanum) {
 				robot.x += num_inches * sin(robot.orientation * convert_deg);
 				robot.y += num_inches * cos(robot.orientation * convert_deg);
-				Event::Move move(index, robot);
+				move_log.add_event(Event::Move(index, robot));
 			}
 			else {
 				rotate_cw(90);
 				forward(num_inches);
 				rotate_ccw(90);
-				Event::Move move(index, robot);
+				move_log.add_event(Event::Move(index, robot));
 			}
 		}
 
@@ -127,14 +129,13 @@ namespace rmas {
 			if (robot.is_mechanum) {
 				robot.x -= num_inches * sin(robot.orientation * convert_deg);
 				robot.y -= num_inches * cos(robot.orientation * convert_deg);
-				Event::Move move(index, robot);
+				move_log.add_event(Event::Move(index, robot));
 			}
 			else {
 				rotate_ccw(90);
 				forward(num_inches);
 				rotate_cw(90);
-				Event::Move move(index, robot);
-
+				move_log.add_event(Event::Move(index, robot));
 			}
 		}
 

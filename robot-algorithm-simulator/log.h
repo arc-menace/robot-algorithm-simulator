@@ -8,7 +8,7 @@
 #include <fstream>
 
 namespace rmas {
-	template <typename event_type>
+	template <class event_type>
 	class Log {
 	private:
 		std::vector<event_type> event_log;
