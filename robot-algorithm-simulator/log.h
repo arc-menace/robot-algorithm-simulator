@@ -2,7 +2,7 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include "event.h"
+#include "move.h"
 #include <vector>
 #include <iostream>
 #include <fstream>

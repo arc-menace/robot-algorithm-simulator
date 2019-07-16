@@ -3,7 +3,7 @@
 #define ROBOT_H
 
 #include "block.h"
-#include "event.h"
+#include "move.h"
 #include <vector>
 #include <math.h> //for sin() and cos() in Robot movement functions
 #include <string>
@@ -14,6 +14,8 @@ namespace rmas {
 	//Robot class
 	class Robot {
 	private:
+		friend class Environment;
+
 		//Robot must remember where it started to return there at the end
 		double starting_x = DEFAULT_ROBOT_X;
 		double starting_y = DEFAULT_ROBOT_Y;
@@ -42,79 +44,7 @@ namespace rmas {
 		std::vector<Block> blocks_on_robot;
 
 	public:
-		//==============================================
-		//Movement Functions
-		//==============================================
-
-		void set_orientation(double direction) { //Faces the robot whatever direction the user desires.
-			while (direction >= 360.0) {
-				direction -= 360; //Ex. set_orientation(720)
-			}
-			while (direction <= 0.0) {
-				direction += 360.0; //Ex. set_orientation(-950)
-			}
-			if (direction < orientation) {
-				rotate_cw(orientation - direction);
-			}
-			if (direction > orientation) {
-				rotate_ccw(direction - orientation);
-			}
-
-		}
-
-		void rotate_cw(double num_degrees) { //Rotate Clockwise
-			orientation -= num_degrees;
-			if (orientation < 0) {
-				orientation += 360; //Converts a negative number of degrees to positive 
-									//(Ex. -40 degrees = 320 degrees = -40 degrees + 360 degrees)
-			}
-			std::string message = "Rotated Clockwise " + std::to_string(num_degrees) + ". Robot oriented at " + std::to_string(orientation);
-				
-		}
-
-		void rotate_ccw(double num_degrees) { //Rotate CounterClockwise
-			orientation += num_degrees;
-			if (orientation >= 360) {
-				orientation -= 360; //Converts a number of degrees >= 360 back between 0 and 360 
-									//(Ex. 400 degrees = 40 degrees = 400 degrees - 360 degrees)
-			}
-		}
-
-		void forward(double num_inches) { //X and Y are the adjacent and opposite sides of a triangle 
-										  //with hypotenuse num_inches and theta orientation
-			y += num_inches * sin(orientation * convert_deg);
-			x += num_inches * cos(orientation * convert_deg);
-		}
-
-		void backward(double num_inches) { //Same math as forward movement except... backwards...
-			y -= num_inches * sin(orientation * convert_deg);
-			x -= num_inches * cos(orientation * convert_deg);
-		}
-
-		void right(double num_inches) {
-			if (is_mechanum) {
-				x += num_inches * sin(orientation * convert_deg);
-				y += num_inches * cos(orientation * convert_deg);
-			}
-			else {
-				rotate_cw(90);
-				forward(num_inches);
-				rotate_ccw(90);
-			}
-		}
-
-		void left(double num_inches) {
-			if (is_mechanum) {
-				x -= num_inches * sin(orientation * convert_deg);
-				y -= num_inches * cos(orientation * convert_deg);
-			}
-			else {
-				rotate_ccw(90);
-				forward(num_inches);
-				rotate_cw(90);
-			}
-		}
-
+		
 		//==============================================
 
 		void set_wheel_diameter(double diameter) {

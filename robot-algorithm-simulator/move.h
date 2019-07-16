@@ -3,10 +3,10 @@
 #define DISPLAY_H
 
 namespace rmas {
-	class Event {
+	class Move {
 	public:
 		double x, y, orientation;
-		Event(double init_x, double init_y, double init_orientation) {
+		Move(double init_x, double init_y, double init_orientation) {
 			x = init_x;
 			y = init_y;
 			orientation = init_orientation;
