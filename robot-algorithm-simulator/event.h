@@ -1,18 +1,19 @@
 #pragma once
-#ifndef EVENT_H
-#define EVENT_H
+#ifndef DISPLAY_H
+#define DISPLAY_H
 
-#include "rmas6219.h"
+#include "robot.h"
+#include <string>
 
 namespace rmas {
-	template<typename class_type>
 	class Event {
 	public:
-		class Movement {
-
-		};
-
-		Event
+		double x, y, orientation;
+		Event(double init_x, double init_y, double init_orientation) {
+			x = init_x;
+			y = init_y;
+			orientation = init_orientation;
+		}
 	};
 }
 

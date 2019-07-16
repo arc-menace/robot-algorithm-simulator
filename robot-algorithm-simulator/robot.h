@@ -3,6 +3,7 @@
 #define ROBOT_H
 
 #include "block.h"
+#include "event.h"
 #include <vector>
 #include <math.h> //for sin() and cos() in Robot movement functions
 #include <string>

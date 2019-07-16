@@ -158,8 +158,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
-    <ClInclude Include="display.h" />
+    <ClInclude Include="error.h" />
+    <ClInclude Include="event.h" />
     <ClInclude Include="global.h" />
+    <ClInclude Include="log.h" />
     <ClInclude Include="obstacle.h" />
     <ClInclude Include="rmas6219.h" />
     <ClInclude Include="robot.h" />
