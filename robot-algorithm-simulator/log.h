@@ -2,7 +2,7 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include "move.h"
+#include "event.h"
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -14,24 +14,30 @@ namespace rmas {
 		std::vector<event_type> event_log;
 		int count = 0;
 	public:
+		void add_event(event_type new_event) {
+			event_log.push_back(new_event);
+		}
+
+		event_type return_event() {
+			return event_log[count];
+			count++;
+		}
+
 		void print_log() {
-			std::cout << "X\tY\tOrientation"<< std::endl;
+			std::cout << event_log[0].context_line << std::endl;
 			for (int i = 0; i < event_log.size(); i++) {
-				std::cout << event_log[i].x << "\t";
-				std::cout << event_log[i].y << "\t";
-				std::cout << event_log[i].orientation << char(248) << std::endl;
+				event_log[i].print_event();
 			}
 		}
+
 		int write_log() {
 			std::ofstream outf("rmas-sim-" + std::to_string(count) + ".csv");
 			if (!outf) {
 				return 1;
 			}
-			outf << "X,Y,Orientation" << std::endl;
+			outf << event_log[0].context_line << std::endl;
 			for (int i = 0; i < event_log.size(); i++) {
-				outf << event_log[i].x << ",";
-				outf << event_log[i].y << ",";
-				outf << event_log[i].orientation << char(248) << std::endl;
+				event_log[i].write_event();
 			}
 			count++;
 			return 0;

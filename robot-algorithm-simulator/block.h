@@ -8,8 +8,10 @@
 namespace rmas {
 	class Block {
 	private:
+		friend class Move;
 		double stated_x = 0; //Location
 		double stated_y = 0; //on map.
+		double orientation = 0;
 
 		char id = '0'; //i.e. A, B, C, D, E, or F
 
@@ -23,8 +25,8 @@ namespace rmas {
 			return random_num;
 		}
 
-		double actual_x = stated_x + return_rand(6, -6.0); //This gives the block an accuracy within 1 sq. foot of the correct location
-		double actual_y = stated_y + return_rand(6, -6.0);
+		double x = stated_x + return_rand(6, -6.0); //This gives the block an accuracy within 1 sq. foot of the correct location
+		double y = stated_y + return_rand(6, -6.0);
 
 	public:
 		Block(double x_coordinate, double y_coordinate) { //Block Object constructor

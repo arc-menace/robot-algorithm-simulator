@@ -4,11 +4,12 @@
 
 namespace rmas {
 	class Obstacle {
-		double stated_x, stated_y; //Location on map.
+		friend class Move;
+		double x, y; //Location on map.
 	public:
 		Obstacle(double x_coordinate, double y_coordinate) {
-			stated_x = x_coordinate;
-			stated_y = y_coordinate;
+			x = x_coordinate;
+			y = y_coordinate;
 		}
 	};
 }

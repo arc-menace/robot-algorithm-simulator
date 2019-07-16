@@ -4,10 +4,12 @@
 
 #include <vector>
 #include <math.h>
+#include <string>
 #include "global.h"
 #include "robot.h"
 #include "block.h"
 #include "obstacle.h"
+#include "event.h"
 //#include "map.h"
 //#include "mothership.h"
 
@@ -24,20 +26,41 @@ namespace rmas {
 		tracks the end of the round
 		does all logging (indexed logging for replication)
 	*/
-
 	private:
+		Robot robot;
+		int index = 0;
+		int round_num = 1;
+		//map
 		//vector of blocks
 		//vector of obstacles
+
+		//==============================================
+		//	Block Generation Functions
+		//==============================================
+
+		//==============================================
+		//	Block Movement Functions
+		//==============================================
+
+		//==============================================
+		//	Obstacle Generation Functions
+		//==============================================
+
+		//==============================================
+		//	Obstacle Movement Functions
+		//==============================================
+
+
 	public:
+		Environment(Robot main_robot, int round_number = 0, bool rand_blocks = true, bool rand_obstacles = true) {
+			robot = main_robot;
+			round_num = round_number;
+		}
+
 		//==============================================
 		//	Robot Movement Functions
 		//==============================================
 
-		//All functions need to check for collisions in given path
-		//if the robot collides with the mothership, the mothership does not move. The robot can get on top of the mothership
-		//if the robot hits a block or an obstacle, the object is moved with the robot
-		
-		Robot robot;
 		void set_orientation(double direction) { //Faces the robot whatever direction the user desires.
 			while (direction >= 360.0) {
 				direction -= 360; //Ex. set_orientation(720)
@@ -51,7 +74,7 @@ namespace rmas {
 			if (direction > robot.orientation) {
 				rotate_ccw(direction - robot.orientation);
 			}
-
+			Event::Move move(index, robot);
 		}
 
 		void rotate_cw(double num_degrees) { //Rotate Clockwise
@@ -60,7 +83,7 @@ namespace rmas {
 				robot.orientation += 360; //Converts a negative number of degrees to positive 
 									//(Ex. -40 degrees = 320 degrees = -40 degrees + 360 degrees)
 			}
-			std::string message = "Rotated Clockwise " + std::to_string(num_degrees) + ". Robot oriented at " + std::to_string(orientation);
+			Event::Move move(index, robot);
 		}
 
 		void rotate_ccw(double num_degrees) { //Rotate CounterClockwise
@@ -70,28 +93,33 @@ namespace rmas {
 				robot.orientation -= 360; //Converts a number of degrees >= 360 back between 0 and 360 
 									//(Ex. 400 degrees = 40 degrees = 400 degrees - 360 degrees)
 			}
+			Event::Move move(index, robot);
 		}
 
 		void forward(double num_inches) { //X and Y are the adjacent and opposite sides of a triangle 
 										  //with hypotenuse num_inches and theta orientation
 			robot.y += num_inches * sin(robot.orientation * convert_deg);
 			robot.x += num_inches * cos(robot.orientation * convert_deg);
+			Event::Move move(index, robot);
 		}
 
 		void backward(double num_inches) { //Same math as forward movement except... backwards...
 			robot.y -= num_inches * sin(robot.orientation * convert_deg);
 			robot.x -= num_inches * cos(robot.orientation * convert_deg);
+			Event::Move move(index, robot);
 		}
 
 		void right(double num_inches) {
 			if (robot.is_mechanum) {
 				robot.x += num_inches * sin(robot.orientation * convert_deg);
 				robot.y += num_inches * cos(robot.orientation * convert_deg);
+				Event::Move move(index, robot);
 			}
 			else {
 				rotate_cw(90);
 				forward(num_inches);
 				rotate_ccw(90);
+				Event::Move move(index, robot);
 			}
 		}
 
@@ -99,11 +127,14 @@ namespace rmas {
 			if (robot.is_mechanum) {
 				robot.x -= num_inches * sin(robot.orientation * convert_deg);
 				robot.y -= num_inches * cos(robot.orientation * convert_deg);
+				Event::Move move(index, robot);
 			}
 			else {
 				rotate_ccw(90);
 				forward(num_inches);
 				rotate_cw(90);
+				Event::Move move(index, robot);
+
 			}
 		}
 
@@ -115,23 +146,12 @@ namespace rmas {
 		//return x,y
 		//}
 
+		//int signal end
+
+		//private:
 		//bool pickUp Block{
 		//return true/false successful
 		//}
-
-		//==============================================
-		//	Block Movement Functions
-		//==============================================
-
-
-
-		//==============================================
-		//	Obstacle Movement Functions
-		//==============================================
-
-
-
-
 	};
 }
 

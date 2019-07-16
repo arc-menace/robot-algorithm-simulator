@@ -2,12 +2,9 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-#include "block.h"
-#include "move.h"
 #include <vector>
-#include <math.h> //for sin() and cos() in Robot movement functions
-#include <string>
 #include <iostream>
+#include "block.h"
 #include "global.h"
 
 namespace rmas {
@@ -15,7 +12,6 @@ namespace rmas {
 	class Robot {
 	private:
 		friend class Environment;
-
 		//Robot must remember where it started to return there at the end
 		double starting_x = DEFAULT_ROBOT_X;
 		double starting_y = DEFAULT_ROBOT_Y;
@@ -44,8 +40,17 @@ namespace rmas {
 		std::vector<Block> blocks_on_robot;
 
 	public:
-		
-		//==============================================
+		double return_x() {
+			return x;
+		}
+
+		double return_y() {
+			return y;
+		}
+
+		double return_orientation() {
+			return orientation;
+		}
 
 		void set_wheel_diameter(double diameter) {
 			if (diameter > MAX_WHEEL_DIAM) {
