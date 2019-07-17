@@ -16,7 +16,7 @@ namespace Event {
 		double event_x, event_y, event_orientation;
 		int index;
 	public:
-		std::string context_line = "X\tY\tOrientation"; //X	 Y  Orientation
+		std::string context_line = "Index\tX\tY\tOrientation"; //X	 Y  Orientation
 
 		Move(int ind, rmas::Robot robot) {
 			index = ind;
@@ -26,7 +26,7 @@ namespace Event {
 		}
 
 		void print_event() {
-			std::cout << event_x << "\t" << event_y << "\t" << event_orientation << char(248) << std::endl;
+			std::cout << index << "\t" << event_x << "\t" << event_y << "\t" << event_orientation << char(248) << std::endl;
 		}
 
 		void write_event(std::string filename) {
