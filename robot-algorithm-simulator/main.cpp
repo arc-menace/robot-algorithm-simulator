@@ -22,6 +22,7 @@ int main() {
 	environment.rotate_ccw(90);
 
 	//show results
+	environment.move_log.print_log();
 
 	return 0;
 }

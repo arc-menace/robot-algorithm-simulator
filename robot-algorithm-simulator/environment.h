@@ -10,6 +10,7 @@
 #include "block.h"
 #include "obstacle.h"
 #include "event.h"
+#include "log.h"
 //#include "map.h"
 //#include "mothership.h"
 
@@ -50,14 +51,16 @@ namespace rmas {
 		//	Obstacle Movement Functions
 		//==============================================
 
+		
 
 	public:
+		Log <Event::Move> move_log;
+
 		Environment(Robot main_robot, int round_number = 0, bool rand_blocks = true, bool rand_obstacles = true) {
 			robot = main_robot;
 			round_num = round_number;
+			move_log.add_event(Event::Move(index, robot)); //Set initial position as first move event
 		}
-
-		Log<Event::Move> move_log;
 
 		//==============================================
 		//	Robot Movement Functions

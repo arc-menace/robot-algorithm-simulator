@@ -8,7 +8,7 @@
 #include <fstream>
 
 namespace rmas {
-	template <class event_type>
+	template <typename event_type>
 	class Log {
 	private:
 		std::vector<event_type> event_log;
@@ -27,6 +27,7 @@ namespace rmas {
 			std::cout << event_log[0].context_line << std::endl;
 			for (int i = 0; i < event_log.size(); i++) {
 				event_log[i].print_event();
+				std::cout << std::endl;
 			}
 		}
 
