@@ -34,6 +34,18 @@ namespace Event {
 			outf << index << "," << event_x << "," << event_y << "," << event_orientation << char(248) << std::endl;
 			outf.close();
 		}
+		
+		double return_x() {
+			return event_x;
+		}
+
+		double return_y() {
+			return event_y;
+		}
+
+		double return_orientation() {
+			return event_orientation;
+		}
 	};
 }
 

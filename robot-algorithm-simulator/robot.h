@@ -40,6 +40,14 @@ namespace rmas {
 		std::vector<Block> blocks_on_robot;
 
 	public:
+		double return_width() {
+			return width;
+		}
+
+		double return_length() {
+			return length;
+		}
+
 		double return_x() {
 			return x;
 		}
