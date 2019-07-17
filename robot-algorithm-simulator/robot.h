@@ -19,10 +19,6 @@ namespace rmas {
 		double x = starting_x; //Full map is 96" square. (48,48) is center
 		double y = starting_y;
 
-		//Where the Robot is going
-		double next_x = 0;
-		double next_y = 0;
-
 		bool is_mechanum = false;
 
 		double orientation = DEFAULT_START_ORIENTATION; //Direction the Robot is pointing is measured in degrees.
@@ -68,11 +64,6 @@ namespace rmas {
 				diameter = 0;
 			}
 			wheel_diameter = diameter;
-		}
-
-		void set_next_x_y(double a, double b) {
-			next_x = a;
-			next_y = b;
 		}
 
 		void define_sensors(double distance, double angle) {
