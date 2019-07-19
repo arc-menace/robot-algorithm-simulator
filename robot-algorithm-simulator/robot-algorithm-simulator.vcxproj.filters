@@ -45,9 +45,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\..\..\..\Development\SFML\bin\sfml-graphics-d-2.dll">
-      <Filter>Source Files</Filter>
-    </None>
-  </ItemGroup>
 </Project>

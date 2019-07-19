@@ -31,7 +31,9 @@ namespace rmas {
 		Robot robot;
 		int index = 0;
 		int round_num = 1;
+		std::vector<Block> blocks;
 		//map
+		//Mothership generation
 		//vector of blocks
 		//vector of obstacles
 
@@ -142,10 +144,68 @@ namespace rmas {
 			}
 		}
 
-		/*
-			Diagonal movement(mostly for mechanum) moves at 45 degree angle
-		*/
+		void diagonal_right_up(double num_inches) {
+			if (robot.is_mechanum) {
+				robot.x += num_inches;
+				robot.y += num_inches;
+				move_log.add_event(Event::Move(index++, robot));
+			}
+			else {
+				rotate_cw(robot.orientation -= 45);
+				forward(num_inches);
+				rotate_ccw(robot.orientation += 45);
+				move_log.add_event(Event::Move(index++, robot));
+			}
+		}
 
+		void diagonal_right_down(double num_inches) {
+			if (robot.is_mechanum) {
+				robot.x += num_inches;
+				robot.y -= num_inches;
+				move_log.add_event(Event::Move(index++, robot));
+			}
+			else {
+				rotate_cw(robot.orientation -= (90 + 45));
+				forward(num_inches);
+				rotate_ccw(robot.orientation += (90 + 45));
+				move_log.add_event(Event::Move(index++, robot));
+			}
+		}
+
+		void diagonal_left_up(double num_inches) {
+			if (robot.is_mechanum) {
+				robot.x -= num_inches;
+				robot.y += num_inches;
+				move_log.add_event(Event::Move(index++, robot));
+			}
+			else {
+				rotate_cw(robot.orientation += 45);
+				forward(num_inches);
+				rotate_ccw(robot.orientation -= 45);
+				move_log.add_event(Event::Move(index++, robot));
+			}
+		}
+
+		void diagonal_left_down(double num_inches) {
+			if (robot.is_mechanum) {
+				robot.x -= num_inches;
+				robot.y -= num_inches;
+				move_log.add_event(Event::Move(index++, robot));
+			}
+			else {
+				rotate_cw(robot.orientation += 135);
+				forward(num_inches);
+				rotate_ccw(robot.orientation -= 135);
+				move_log.add_event(Event::Move(index++, robot));
+			}
+		}
+
+		/*void sense() {
+			for (int i = 0; i < blocks.size(); i++) {
+				return;
+			}
+		}
+		*/
 		//void sense(){
 		//return x,y
 		//}

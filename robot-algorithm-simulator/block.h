@@ -12,6 +12,7 @@ namespace rmas {
 		double stated_x = 0; //Location
 		double stated_y = 0; //on map.
 		double orientation = 0;
+		float radius = 0.75;
 
 		char id = '0'; //i.e. A, B, C, D, E, or F
 

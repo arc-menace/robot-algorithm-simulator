@@ -5,16 +5,24 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <vector>
 #include "robot.h"
 
 namespace Event {
+
+	class Base {
+	public:
+		int index;
+		std::string context_line = "Undefined";
+		virtual void print_event() = 0;
+		virtual void write_event(std::string filename) = 0;
+	};
 	//find way to use template to use for obstalces and blocks and mothership
 	//Add base class Event and make other classes derived classes
 	//use virtual functions to redefine functions from base class to suit each class
-	class Move {
+	class Move : Base {
 	private:
 		double event_x, event_y, event_orientation;
-		int index;
 	public:
 		std::string context_line = "Index\tX\tY\tOrientation"; //X	 Y  Orientation
 
@@ -35,17 +43,9 @@ namespace Event {
 			outf.close();
 		}
 		
-		double return_x() {
-			return event_x;
-		}
-
-		double return_y() {
-			return event_y;
-		}
-
-		double return_orientation() {
-			return event_orientation;
-		}
+		double return_x() { return event_x; }
+		double return_y() {	return event_y; }
+		double return_orientation() { return event_orientation; }
 	};
 }
 

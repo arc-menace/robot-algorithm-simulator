@@ -36,6 +36,10 @@ namespace rmas {
 		std::vector<Block> blocks_on_robot;
 
 	public:
+		void mechanum(bool change) {
+			is_mechanum = change;
+		}
+
 		double return_width() {
 			return width;
 		}
