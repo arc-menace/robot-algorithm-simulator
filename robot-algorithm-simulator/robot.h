@@ -5,7 +5,9 @@
 #include <vector>
 #include <iostream>
 #include "block.h"
+#include "obstacle.h"
 #include "global.h"
+#include "object.h"
 
 namespace rmas {
 	//Robot class
@@ -34,6 +36,8 @@ namespace rmas {
 		double wheel_diameter = 0; //In inches. Distance travelled/time elapsed is ignored by default so the diameter is 0
 
 		std::vector<Block> blocks_on_robot;
+		std::vector<Obstacle> known_obstacles;
+		std::vector<Object> objects;
 
 	public:
 		void mechanum(bool change) {
@@ -58,6 +62,10 @@ namespace rmas {
 
 		double return_orientation() {
 			return orientation;
+		}
+
+		double return_sensing_distance() {
+			return sensing_distance;
 		}
 
 		void set_wheel_diameter(double diameter) {
@@ -113,7 +121,7 @@ namespace rmas {
 			std::cout << "Robot width: " << width << " inches" << std::endl;
 			std::cout << "Robot length: " << length << " inches" << std::endl;
 			if (advanced) {
-				std::cout << "Robot can sense obstacles " << sensing_distance << " inches away and within " <<
+				std::cout << "Robot can sense obstacles " << sensing_distance << " inches away within " <<
 					sensing_angle << char(248) << std::endl;
 				std::cout << "Wheels are " << wheel_diameter << " inches in diameter" << std::endl;
 				std::cout << "There are " << blocks_on_robot.size() << " blocks currently on the robot" << std::endl;

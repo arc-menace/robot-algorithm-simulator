@@ -17,7 +17,7 @@ namespace Event {
 		virtual void print_event() = 0;
 		virtual void write_event(std::string filename) = 0;
 	};
-	//find way to use template to use for obstalces and blocks and mothership
+	//find way to use template to use for obstacles and blocks and mothership
 	//Add base class Event and make other classes derived classes
 	//use virtual functions to redefine functions from base class to suit each class
 	class Move : Base {
@@ -47,6 +47,7 @@ namespace Event {
 		double return_y() {	return event_y; }
 		double return_orientation() { return event_orientation; }
 	};
+
 }
 
 #endif

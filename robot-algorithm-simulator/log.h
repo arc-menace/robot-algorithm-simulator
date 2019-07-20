@@ -16,6 +16,7 @@ namespace rmas {
 	public:
 		void add_event(event_type new_event) {
 			event_log.push_back(new_event);
+			new_event.print_event();
 		}
 
 		event_type return_event(int count) {
@@ -37,14 +38,17 @@ namespace rmas {
 			}
 		}
 
+
+		//Write log function does not work currently
 		int write_log() {
 			std::ofstream outf("rmas-sim-" + std::to_string(log_count) + ".csv");
 			if (!outf) {
 				return 1;
 			}
 			outf << event_log[0].context_line << std::endl;
+			outf.close();
 			for (int i = 0; i < event_log.size(); i++) {
-				event_log[i].write_event();
+				event_log[i].write_event("rmas-sim-" + std::to_string(log_count) + ".csv");
 			}
 			log_count++;
 			return 0;

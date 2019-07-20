@@ -1,15 +1,15 @@
 What I know I need to do but don't want to do right now:
 robot.h:
- - Add logging functions
 
 block.h:
  - Add logging Functions
 
 obstacle.h:
- - Function to set random position
  - Add logging functions
  
 map.h:
+ - create file
+ - create class
  - Add logging functions
  - Check to make sure that default values are assigned upon object creation
  
@@ -20,14 +20,29 @@ mothership.h
  - add logging functions
  - add vector to hold blocks
 
- Redo all the definition funtions for changing settings
- Allow for custom settings to be saved or loaded
- Allow to leave as default and skip a particular setting
+ environment.h
+ - obstacle move functions
+ - random obstacle generation function
+ - block move functions
+ - random block generation function
+ - robot pick up block function
+ - robot end signal/end simulation function
+ - map generation function
+ - mothership generation function
+ - collision detection to run during movement functions
 
- The big stuff to do:
- Create Environment in main to hold all objects and track stuff
+ event.h:
+ - add collision event class
+ - add block pick up event class
+ - add block place class
+ - add end of sim class
+ - add point scored change (+ or -)
 
- Logging Class
+ main.cpp
+ - adjust problem with map orientation from viewers perspective (everything is backward)
+ - set up algorithm file
 
- Cinder stuff
-
+Menu:
+ - Redo all the definition funtions for changing settings
+ - Allow for custom settings to be saved or loaded
+ - Allow to leave as default and skip a particular setting when setting custom settings

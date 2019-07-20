@@ -10,7 +10,7 @@ int main() {
 		Graphics copies each log to a throw away vector
 		as it used the events to animate, it remebers where it was, so that it isn't scanning through whole vectors.
 	*/
-	std::cout << "test" << std::endl;
+	bool test_mode = true;
 	//define robot
 	Robot robot;
 	robot.mechanum(true);
@@ -20,8 +20,6 @@ int main() {
 	Environment environment(robot);
 
 	//run algorithm
-	environment.forward(40);
-	environment.right(40);
 
 	//show results
 	environment.move_log.print_log();
@@ -59,6 +57,29 @@ int main() {
 		map_shape.setPosition(20, 20);
 		window.draw(map_shape);
 
+		if (test_mode) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+				environment.rotate_ccw(1);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+				environment.rotate_cw(1);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)){
+				//Should eventually be forward
+				environment.backward(scale);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)){
+				//Should eventually be backward
+				environment.forward(scale);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)){
+				environment.left(scale);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)){
+				environment.right(scale);
+			}
+		}
+		
 		Event::Move temp_event = environment.move_log.return_event(count);
 		robot_shape.setPosition(temp_event.return_x() * scale + 20, temp_event.return_y() * scale + 20);
 		robot_shape.setRotation(temp_event.return_orientation());		
@@ -71,6 +92,5 @@ int main() {
 			count++;
 		}
 	}
-
 	return 0;
 }

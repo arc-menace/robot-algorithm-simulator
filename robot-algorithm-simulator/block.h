@@ -12,7 +12,8 @@ namespace rmas {
 		double stated_x = 0; //Location
 		double stated_y = 0; //on map.
 		double orientation = 0;
-		float radius = 0.75;
+		float width = 1.50;
+		bool has_been_hit = false;
 
 		char id = '0'; //i.e. A, B, C, D, E, or F
 
@@ -34,7 +35,15 @@ namespace rmas {
 			stated_x = x_coordinate;
 			stated_y = y_coordinate;
 		}
-
+		double return_x() {
+			return x;
+		}
+		double return_y() {
+			return y;
+		}
+		double return_width() {
+			return width;
+		}
 	};
 }
 
