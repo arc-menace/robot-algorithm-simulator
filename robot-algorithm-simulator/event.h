@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include "robot.h"
+#include "block.h"
 
 namespace Event {
 
@@ -16,6 +17,7 @@ namespace Event {
 		std::string context_line = "Undefined";
 		virtual void print_event() = 0;
 		virtual void write_event(std::string filename) = 0;
+		Base() = default;
 	};
 	//find way to use template to use for obstacles and blocks and mothership
 	//Add base class Event and make other classes derived classes
@@ -47,7 +49,41 @@ namespace Event {
 		double return_y() {	return event_y; }
 		double return_orientation() { return event_orientation; }
 	};
+	class Block_Created : Base {
+	private:
+		rmas::Block block;
+		std::string context_line = "Blocks Created: ";
+	public:
+		Block_Created(int ind, rmas::Block i_block) {
+			index = ind;
+			rmas::Block block(i_block.return_x(), i_block.return_y());
+		}
+		void print_event() {
+			std::cout << "Block " << block.return_id() << " created at (" 
+				<< block.return_x() << "," << block.return_y() << ")" << std::endl;
+		}
+		void write_event(std::string filename) {
+			return;
+		}
+	};
 
+	class Block_Picked_Up : Base {
+	private:
+		rmas::Block block;
+		std::string context_line = "Blocks Picked Up: ";
+	public:
+		Block_Picked_Up(int ind, rmas::Block i_block) {
+			block = i_block;
+			index = ind;
+		}
+		void print_event() {
+			std::cout << "Picked up ";
+			block.print_atts();
+		}
+		void write_event(std::string filename) {
+			return;
+		}
+	};
 }
 
 #endif

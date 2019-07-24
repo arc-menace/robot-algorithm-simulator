@@ -39,6 +39,7 @@ namespace rmas {
 		std::vector<Obstacle> known_obstacles;
 		std::vector<Object> objects;
 
+		Shape shape = Shape::SQUARE;
 	public:
 		void mechanum(bool change) {
 			is_mechanum = change;
@@ -66,6 +67,14 @@ namespace rmas {
 
 		double return_sensing_distance() {
 			return sensing_distance;
+		}
+
+		Shape return_shape() {
+			return Shape::SQUARE;
+		}
+		
+		double return_radius() {
+			return 0;
 		}
 
 		void set_wheel_diameter(double diameter) {
