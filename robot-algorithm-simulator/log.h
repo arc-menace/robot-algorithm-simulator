@@ -14,9 +14,11 @@ namespace rmas {
 		std::vector<event_type> event_log;
 		int log_count = 0;
 	public:
-		void add_event(event_type new_event) {
+		void add_event(event_type new_event, bool silent = false) {
 			event_log.push_back(new_event);
-			new_event.print_event();
+			if (!silent) {
+				new_event.print_event();
+			}
 		}
 
 		event_type return_event(int count) {

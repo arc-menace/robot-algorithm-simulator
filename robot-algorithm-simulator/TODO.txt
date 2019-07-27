@@ -3,20 +3,14 @@ robot.h:
 
 block.h:
  - Add logging Functions
- - Change random number generating function to return decimal numbers;
 
 obstacle.h:
  - Add logging functions
  
-map.h - Can wait until robot, blocks and obstacles are done:
- - create file
- - create class
- - Add logging functions
- - Check to make sure that default values are assigned upon object creation
+map.h 
+ - Add logging functions (Just the creation events)
  
 mothership.h - Can wait until robot, blocks and obstacles are done:
- - create file
- - create class 
  - define logic for position based upon dimensions in rules
  - add logging functions
  - add vector to hold blocks
@@ -34,7 +28,6 @@ mothership.h - Can wait until robot, blocks and obstacles are done:
  - Fall Detection
  - Diagonal movement functions should use sin and cos on x and y
  - Add support for compound shapes in intersect function
- - Fix class hierarchy for object interaction detection
  - Look into a way to combine the intersect and encapsulate functions
  - Intersection function does not work
 
@@ -44,13 +37,12 @@ mothership.h - Can wait until robot, blocks and obstacles are done:
  - add block place class
  - add end of sim class
  - add point scored change (+ or -)
- - Finish write event functions for Block Picked up and BLock created
+ - Finish write event functions for Block Picked up
 
  log.h:
  - Fix write_log function to work better with the print_event() function
 
  object.h:
- - Change default contructor in class hierarchy
 
  main.cpp:
  - adjust problem with map orientation from viewers perspective (everything is backward)

@@ -10,24 +10,24 @@
 #include "block.h"
 
 namespace Event {
-
-	class Base {
+	class Event {
 	public:
 		int index;
-		std::string context_line = "Undefined";
-		virtual void print_event() = 0;
-		virtual void write_event(std::string filename) = 0;
-		Base() = default;
-	};
-	//find way to use template to use for obstacles and blocks and mothership
-	//Add base class Event and make other classes derived classes
-	//use virtual functions to redefine functions from base class to suit each class
-	class Move : Base {
-	private:
 		double event_x, event_y, event_orientation;
+		std::string context_line = "No Context line for Base Class";
+
+		Event() : index(0), event_x(0), event_y(0), event_orientation(0) {}
+
+		virtual void print_event() = 0;
+
+		//virtual void write_event(std::ofstream& outf) = 0;
+
+		int return_index() { return index; }
+	};
+
+	class Move : public Event {
 	public:
 		std::string context_line = "Index\tX\tY\tOrientation"; //X	 Y  Orientation
-
 		Move(int ind, rmas::Robot robot) {
 			index = ind;
 			event_x = robot.return_x();
@@ -39,48 +39,66 @@ namespace Event {
 			std::cout << index << "\t" << event_x << "\t" << event_y << "\t" << event_orientation << char(248) << std::endl;
 		}
 
-		void write_event(std::string filename) {
-			std::ofstream outf(filename);
+		void write_event(std::ofstream outf) {
 			outf << index << "," << event_x << "," << event_y << "," << event_orientation << char(248) << std::endl;
-			outf.close();
 		}
-		
-		double return_x() { return event_x; }
-		double return_y() {	return event_y; }
-		double return_orientation() { return event_orientation; }
-	};
-	class Block_Created : Base {
-	private:
-		rmas::Block block;
-		std::string context_line = "Blocks Created: ";
-	public:
-		Block_Created(int ind, rmas::Block i_block) {
-			index = ind;
-			rmas::Block block(i_block.return_x(), i_block.return_y());
-		}
-		void print_event() {
-			std::cout << "Block " << block.return_id() << " created at (" 
-				<< block.return_x() << "," << block.return_y() << ")" << std::endl;
-		}
-		void write_event(std::string filename) {
-			return;
+
+		std::vector<double> return_atts() {
+			std::vector<double>return_vals;
+			return_vals.push_back(event_x);
+			return_vals.push_back(event_y);
+			return_vals.push_back(event_orientation);
+			return return_vals;
 		}
 	};
 
-	class Block_Picked_Up : Base {
+	class Block_Creation : public Event{
 	private:
 		rmas::Block block;
-		std::string context_line = "Blocks Picked Up: ";
+		double event_x, event_y, event_orientation;
+		char id = 'W';
 	public:
-		Block_Picked_Up(int ind, rmas::Block i_block) {
-			block = i_block;
+		Block_Creation(int ind, rmas::Block i_block) : block(i_block) {
+			index = ind;
+			event_x = block.return_x();
+			event_y = block.return_y();
+			event_orientation = block.return_orientation();
+			id = block.return_id();
+		}
+
+		void print_event() {
+			std::cout << index << "\t" << block.return_name() << " " << block.return_id() 
+				<< " has been created at (" << block.return_x() << "," << block.return_y() 
+				<< ")" << std::endl;
+		}
+
+		void write_event(std::ofstream& outf) {
+			outf << index << "\tBlock " << block.return_id() << " created at (" << block.return_x() 
+				<< "," << block.return_y() << ")" << std::endl;
+		}
+		std::vector<double> return_atts() {
+			std::vector<double>return_vals;
+			return_vals.push_back(event_x);
+			return_vals.push_back(event_y);
+			return_vals.push_back(event_orientation);
+			return return_vals;
+		}
+	};
+
+	class Robot_Creation {
+	private:
+		int index = 0;
+		rmas::Robot robot;
+	public:
+		Robot_Creation(int ind, rmas::Robot i_robot) : robot(i_robot) {
 			index = ind;
 		}
+
 		void print_event() {
-			std::cout << "Picked up ";
-			block.print_atts();
+			std::cout << index << "\tA " << robot.return_name() << " has been created at (" << robot.return_x() << "," << robot.return_y() << ")" << std::endl;
 		}
-		void write_event(std::string filename) {
+
+		void write_event() {
 			return;
 		}
 	};

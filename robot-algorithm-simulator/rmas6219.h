@@ -8,5 +8,6 @@
 #include "environment.h"
 #include "log.h"
 #include "event.h"
+#include "mothership.h"
 
 #endif

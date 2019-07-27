@@ -13,8 +13,7 @@
 #include "obstacle.h"
 #include "event.h"
 #include "log.h"
-//#include "map.h"
-//#include "mothership.h"
+#include "mothership.h"
 
 namespace rmas {
 	class Environment {
@@ -30,11 +29,11 @@ namespace rmas {
 			does all logging (indexed logging for replication)
 		*/
 	private:
-		Robot robot;
+		Robot& robot;
 		int index = 0;
 		int round_num = 1;
 		std::vector<Block> blocks;
-		//map
+		Rectangle map;
 		//Mothership generation
 		//vector of blocks
 		std::vector<Obstacle> obstacles;
@@ -48,8 +47,8 @@ namespace rmas {
 				int rand_x = rand() % 84 + 6;
 				int rand_y = rand() % 84 + 6;
 				//Set max and min to be edges of map taking the size of the obstacle into account
-				blocks.push_back(Block(rand_x, rand_y));
-				block_creation_log.add_event(Event::Block_Created(i, blocks[i]));
+				blocks.push_back(Block(rand_x, rand_y, rand_x, rand_y, 'A', 0));
+				block_creation_log.add_event(Event::Block_Creation(index++, blocks[i]));
 			}
 		}
 		//==============================================
@@ -67,6 +66,7 @@ namespace rmas {
 		//==============================================
 		//	Shape Intersection Function
 		//==============================================
+		/*
 		template<typename S1, typename S2>
 		bool intersect(S1 ref_obj, S2 object2) {
 			bool intersects = false;
@@ -152,14 +152,16 @@ namespace rmas {
 			}
 			return encapsulates;
 		}
+		*/
 
 	public:
 		Log <Event::Move> move_log;
-		Log <Event::Block_Created> block_creation_log;
+		Log <Event::Block_Creation> block_creation_log;
+		Log <Event::Robot_Creation> robot_creation_log;
 
-		Environment(Robot main_robot, int num_blocks = 0, int num_obstacles = 0, bool rand_blocks = true, bool rand_obstacles = true) {
-			robot = main_robot;
-			move_log.add_event(Event::Move(index++, robot)); //Set initial poisition
+		Environment(Robot &main_robot, Rectangle &i_map, int num_blocks = 0, int num_obstacles = 0, bool rand_blocks = true, bool rand_obstacles = true): robot(main_robot) {
+			move_log.add_event(Event::Move(index, robot), true); //Set initial poisition
+			robot_creation_log.add_event(Event::Robot_Creation(index++, robot));
 			generate_blocks(num_blocks);
 		}
 
@@ -210,28 +212,12 @@ namespace rmas {
 			robot.y += num_inches * sin(robot.orientation * convert_deg);
 			robot.x += num_inches * cos(robot.orientation * convert_deg);
 			move_log.add_event(Event::Move(index++, robot));
-			for (int i = 0; i < blocks.size(); i++) {
-				if (intersect(robot, blocks[i])) {
-					std::cout << "INTERSECTION!!!!!!!!" << std::endl;
-				}
-				if (encapsulate(robot, blocks[i])) {
-					std::cout << "ENCAPSULATION!!!!!!" << std::endl;
-				}
-			}
 		}
 
 		void backward(double num_inches) { //Same math as forward movement except... backwards...
 			robot.y -= num_inches * sin(robot.orientation * convert_deg);
 			robot.x -= num_inches * cos(robot.orientation * convert_deg);
 			move_log.add_event(Event::Move(index++, robot));
-			for (int i = 0; i < blocks.size(); i++) {
-				if (intersect(robot, blocks[i])) {
-					std::cout << "INTERSECTION!!!!!!!!" << std::endl;
-				}
-				if (encapsulate(robot, blocks[i])) {
-					std::cout << "ENCAPSULATION!!!!!!" << std::endl;
-				}
-			}
 		}
 
 		void right(double num_inches) {
@@ -239,14 +225,6 @@ namespace rmas {
 				robot.x += num_inches * sin(robot.orientation * convert_deg);
 				robot.y += num_inches * cos(robot.orientation * convert_deg);
 				move_log.add_event(Event::Move(index++, robot));
-				for (int i = 0; i < blocks.size(); i++) {
-					if (intersect(robot, blocks[i])) {
-						std::cout << "INTERSECTION!!!!!!!!" << std::endl;
-					}
-					if (encapsulate(robot, blocks[i])) {
-						std::cout << "ENCAPSULATION!!!!!!" << std::endl;
-					}
-				}
 			}
 			else {
 				rotate_cw(90);
@@ -261,14 +239,6 @@ namespace rmas {
 				robot.x -= num_inches * sin(robot.orientation * convert_deg);
 				robot.y -= num_inches * cos(robot.orientation * convert_deg);
 				move_log.add_event(Event::Move(index++, robot));
-				for (int i = 0; i < blocks.size(); i++) {
-					if (intersect(robot, blocks[i])) {
-						std::cout << "INTERSECTION!!!!!!!!" << std::endl;
-					}
-					if (encapsulate(robot, blocks[i])) {
-						std::cout << "ENCAPSULATION!!!!!!" << std::endl;
-					}
-				}
 			}
 			else {
 				rotate_ccw(90);
@@ -362,8 +332,8 @@ namespace rmas {
 				bool is_in_range = false;
 				bool is_in_angle = false;
 
-				double delta_x = abs(robot.x - blocks[i].return_x());
-				double delta_y = abs(robot.y - blocks[i].return_y());
+				double delta_x = abs(robot.x - blocks[i].x);
+				double delta_y = abs(robot.y - blocks[i].y);
 				double distance_away = sqrt(pow(delta_x, 2) + pow(delta_y, 2)); //Pythagorean theorem
 				double angle = atan(delta_y / delta_x);
 
@@ -412,6 +382,7 @@ namespace rmas {
 		//Should only pick up block if it is within a 2" wide by 2" deep square in front of the robot
 		//Shape intersection can be determined by the distance between the center points taking the orientation of each
 		//object into consideration
+		/*
 		bool pick_up_block(){
 			bool successful = false;
 			Square pick_up_space(2, 2);
@@ -428,7 +399,7 @@ namespace rmas {
 			}
 			return successful;
 		}
-
+		*/
 		void place_block() {
 			return;
 		}

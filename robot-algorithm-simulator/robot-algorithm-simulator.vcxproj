@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="define_robot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="event.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="log.h" />
+    <ClInclude Include="mothership.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="obstacle.h" />
     <ClInclude Include="rmas6219.h" />

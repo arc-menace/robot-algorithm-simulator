@@ -2,25 +2,64 @@
 #include <SFML/Graphics.hpp>
 
 using namespace rmas;
+void define_robot(Robot &robot, bool advanced = false);
+void define_blocks(std::vector<Block> &blocks, bool advanced = false);
+void define_obstacles(std::vector<Obstacle> &obstacles, bool advanced = false);
+void define_map(Rectangle &map, bool advanced = false);
+void define_mothership(Mothership &mothership, bool advanced = false);
+
 
 int main() {
-	/*
-		Graphics Function:
-		takes the logs. Each event has a number assigned by the order it occured in the simulation
-		Graphics copies each log to a throw away vector
-		as it used the events to animate, it remebers where it was, so that it isn't scanning through whole vectors.
-	*/
-	bool test_mode = true;
-	//define robot
 	Robot robot;
-	robot.mechanum(true);
+	Rectangle map;
+	std::vector<Block> blocks{};
+	std::vector<Obstacle> obstacles{};
+	Mothership mothership;
+
+	bool test_mode = false;
+
+	for (;;) {
+		std::cout << "1)\tRun Simulation\n" << "2)\tChange Settings\n"
+			<< "3)\tChange Advanced Settings\n" << "4)\t Run in Developer Mode\n"
+			<< "\nSelection: ";
+		int choice;
+		std::cin >> choice;
+		if (std::cin.fail()) {
+			std::cerr << ERROR_INVALID_INPUT << std::endl;
+			continue;
+		}
+		switch (choice) {
+		case 1:
+			break;
+		case 2:
+			define_robot(robot);
+			define_map(map);
+			define_mothership(mothership);
+			define_blocks(blocks);
+			define_obstacles(obstacles);
+		case 3:
+			define_robot(robot, true);
+			define_map(map, true);
+			define_mothership(mothership, true);
+			define_blocks(blocks, true);
+			define_obstacles(obstacles, true);
+		case 4:
+			test_mode = true;
+			break;
+		default:
+			std::cerr << ERROR_INVALID_INPUT << std::endl;
+			continue;
+		}
+	}
+
+	//Define blocks (in environment if random)
+	//Define obstacles (in environment if random)
+	//Define Mothership
+	sf::RenderWindow window(sf::VideoMode(700, 600), "Simulation", sf::Style::Close);
 
 	//Define environment
-	Environment environment(robot, 6, 0, true, true);
-	//Define Map
-	//Define blocks in environment
-	//Define obstacles in environment
-	//Define Mothership
+	Environment environment(robot, map, 6, 0, true, true);
+	
 
 
 	//run algorithm
@@ -29,6 +68,13 @@ int main() {
 	//environment.move_log.print_log();
 
 	//Animate Robot Motion
+	/*
+		Graphics Function:
+		takes the logs. Each event has a number assigned by the order it occured in the simulation
+		Graphics copies each log to a throw away vector
+		as it used the events to animate, it remembers where it was, so that it isn't scanning through whole vectors.
+	*/
+
 	int scale = 5;
 	sf::RectangleShape robot_shape(sf::Vector2f(round(robot.return_length() * scale), round(robot.return_width() * scale)));
 	robot_shape.setFillColor(sf::Color::Blue);
@@ -41,7 +87,7 @@ int main() {
 
 	std::vector<sf::Vector2f> block_positions;
 	for (int i = 0; i < 6; i++) {
-		block_positions.push_back(sf::Vector2f(round(environment.return_block(i).return_width() * scale), round(environment.return_block(i).return_length() * scale)));
+		block_positions.push_back(sf::Vector2f(round(environment.return_block(i).return_width() * scale), round(environment.return_block(i).return_width() * scale)));
 	}
 	std::vector<sf::RectangleShape> block_shapes;
 	for (int i = 0; i < 6; i++) {
@@ -51,7 +97,7 @@ int main() {
 
 	std::vector<sf::CircleShape> obstacle_shapes;
 
-	sf::RenderWindow window(sf::VideoMode(700, 600), "Simulation", sf::Style::Close);
+	
 
 	window.setVerticalSyncEnabled(true);
 
@@ -106,12 +152,13 @@ int main() {
 		}
 		
 		Event::Move temp_event = environment.move_log.return_event(count);
-		robot_shape.setPosition(temp_event.return_x() * scale + 20, temp_event.return_y() * scale + 20);
-		robot_shape.setRotation(temp_event.return_orientation());		
+		std::vector<double> position = environment.move_log.return_event(count).return_atts();
+		robot_shape.setPosition(position[0] * scale + 20, position[1] * scale + 20);
+		robot_shape.setRotation(position[2]);		
 		window.draw(robot_shape);
 		for (int i = 0; i < 6; i++) {
 			block_shapes[i].setPosition(environment.return_block(i).return_x()* scale + 20, environment.return_block(i).return_y() * scale + 20);
-			block_shapes[i].setRotation(environment.return_block(i).return_orient());
+			block_shapes[i].setRotation(environment.return_block(i).return_orientation());
 			window.draw(block_shapes[i]);
 		}
 
