@@ -7,6 +7,7 @@
 #include <string>
 #include <time.h>
 #include <cstdlib>
+#include <algorithm>
 #include "global.h"
 #include "robot.h"
 #include "block.h"
@@ -29,13 +30,12 @@ namespace rmas {
 			does all logging (indexed logging for replication)
 		*/
 	private:
-		Robot& robot;
+		Robot robot;
 		int index = 0;
 		int round_num = 1;
 		std::vector<Block> blocks;
 		Rectangle map;
 		//Mothership generation
-		//vector of blocks
 		std::vector<Obstacle> obstacles;
 		
 		//==============================================
@@ -66,100 +66,60 @@ namespace rmas {
 		//==============================================
 		//	Shape Intersection Function
 		//==============================================
-		/*
-		template<typename S1, typename S2>
-		bool intersect(S1 ref_obj, S2 object2) {
+		
+
+		bool intersect_circle(Obstacle obstacle) { //Untested
+			
+			//Check if the circle intersects any of the corners of the robot
+			
+		
+			std::vector<Point> points;
+			points.push_back(robot.top_right);
+			points.push_back(robot.top_left);
+			points.push_back(robot.bottom_right);
+			points.push_back(robot.bottom_left);
+
+			Point obst_center(obstacle.return_x(), obstacle.return_y());
+
+			for (int i = 0; i < points.size(); i++) {
+				points[i].set_distance(obst_center);
+				if (points[i].distance <= obstacle.return_radius()) { return true; }
+			}
+
+			//Sort the points by distance away from the obstacle
+			std::sort(points.begin(), points.end(), points[0]);
+
+			double m = (points[0].x - points[1].x) / (points[0].y - points[1].y);
+			double b = points[0].y - (m * points[0].x);
+
+			double m_perp = 1 / m;
+			double b_perp = obst_center.y - (m * obst_center.x);
+
+			double new_x = (b - b_perp) / (m_perp - m);
+			double new_y = m_perp * new_x + b_perp;
+
+			double diff_x = fabs(obst_center.x + new_x);
+			double diff_y = fabs(obst_center.y + new_y);
+			double distance = sqrt(pow(diff_x, 2) + pow(diff_y, 2));
+
+			if (distance <= obstacle.return_radius()) { return true; }
+			else { return false; }
+		}
+		
+		bool intersect_rect(Robot robot, Rectangle& rect) {
 			bool intersects = false;
-			double delta_x = ref_obj.return_x() - object2.return_x();
-			double delta_y = ref_obj.return_y() - object2.return_y();
-			double distance_away = sqrt(pow(delta_x, 2) + pow(delta_y, 2));
-			double ref_angle = atan(abs(delta_y) / abs(delta_x));
-			double angle = ref_obj.return_orientation() - ref_angle;
-
-			double internal_distance1 = 0;
-			double diag_angle = atan(ref_obj.return_width() / ref_obj.return_length());
-			if (ref_obj.return_shape() == Shape::SQUARE) {
-				if (angle > diag_angle && angle < diag_angle + 90 || angle > diag_angle + 180 && angle < diag_angle + 270) {
-					double internal_distance1 = cos(angle) * ref_obj.return_length() / 2;
-				}
-				else {
-					double internal_distance1 = cos(angle) * ref_obj.return_width() / 2;
-				}
-			}
-			if (ref_obj.return_shape() == Shape::CIRCLE) {
-				internal_distance1 = ref_obj.return_radius();
-			}
-			//Add functionality for compound shapes
-
-			double internal_distance2 = 0;
-			angle += 180; // other object is going to use the inverse angle
-			diag_angle = atan(object2.return_width() / object2.return_length());
-			if (angle > diag_angle && angle < diag_angle + 90 || angle > diag_angle + 180 && angle < diag_angle + 270) {
-				double internal_distance2 = cos(angle) * object2.return_length() / 2;
-			}
-			else {
-				double internal_distance2 = cos(angle) * object2.return_width() / 2;
-			}
-			if (object2.return_shape() == Shape::CIRCLE) {
-				internal_distance2 = object2.return_radius();
-			}
-			if (distance_away <= internal_distance1 + internal_distance2) {
-				intersects = true;
-			}
 			return intersects;
 		}
-
-		template<typename S1, typename S2>
-		bool encapsulate(S1 ref_obj, S2 object2) {
-			bool encapsulates = false;
-			double delta_x = ref_obj.return_x() - object2.return_x();
-			double delta_y = ref_obj.return_y() - object2.return_y();
-			double distance_away = sqrt(pow(delta_x, 2) + pow(delta_y, 2));
-			double ref_angle = atan(abs(delta_y) / abs(delta_x));
-			double angle = ref_obj.return_orientation() - ref_angle;
-
-			double internal_distance1 = 0;
-			double diag_angle = atan(ref_obj.return_width() / ref_obj.return_length());
-			if (ref_obj.return_shape() == Shape::SQUARE) {
-				if (angle > diag_angle && angle < diag_angle + 90 || angle > diag_angle + 180 && angle < diag_angle + 270) {
-					double internal_distance1 = cos(angle) * ref_obj.return_length() / 2;
-				}
-				else {
-					double internal_distance1 = cos(angle) * ref_obj.return_width() / 2;
-				}
-			}
-			if (ref_obj.return_shape() == Shape::CIRCLE) {
-				internal_distance1 = ref_obj.return_radius();
-			}
-			//Add functionality for compound shapes
-
-			double internal_distance2 = 0;
-			angle += 180; // other object is going to use the inverse angle
-			diag_angle = atan(object2.return_width() / object2.return_length());
-			if (object2.return_shape() == Shape::SQUARE) {
-				if (angle > diag_angle && angle < diag_angle + 90 || angle > diag_angle + 180 && angle < diag_angle + 270) {
-					double internal_distance2 = cos(angle) * object2.return_length() / 2;
-				}
-				else {
-					double internal_distance2 = cos(angle) * object2.return_width() / 2;
-				}
-			}
-			if (object2.return_shape() == Shape::CIRCLE) {
-				internal_distance2 = object2.return_radius();
-			}
-			if (distance_away <= internal_distance1 - internal_distance2) {
-				encapsulates = true;
-			}
-			return encapsulates;
-		}
-		*/
 
 	public:
 		Log <Event::Move> move_log;
 		Log <Event::Block_Creation> block_creation_log;
 		Log <Event::Robot_Creation> robot_creation_log;
 
-		Environment(Robot &main_robot, Rectangle &i_map, int num_blocks = 0, int num_obstacles = 0, bool rand_blocks = true, bool rand_obstacles = true): robot(main_robot) {
+		Environment(Robot &main_robot, Rectangle &i_map, 
+			int num_blocks = 0, int num_obstacles = 0, 
+			bool rand_blocks = true, bool rand_obstacles = true): 
+			robot(main_robot) {
 			move_log.add_event(Event::Move(index, robot), true); //Set initial poisition
 			robot_creation_log.add_event(Event::Robot_Creation(index++, robot));
 			generate_blocks(num_blocks);

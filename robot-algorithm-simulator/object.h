@@ -3,6 +3,8 @@
 #define OBJECT_H
 
 #include <string>
+#include <math.h>
+#include "global.h"
 
 namespace rmas {
 
@@ -13,20 +15,35 @@ namespace rmas {
 		POINT
 	};
 
+	class Point {
+	public:
+		double x = 0;
+		double y = 0;
+		double distance = 0;
+		Point(double t_x = 0, double t_y = 0) : x(t_x), y(t_y) {}
+
+		void set_distance(Point b) {
+			double diff_x = fabs(x + b.x);
+			double diff_y = fabs(y + b.y);
+			distance = sqrt(pow(diff_x, 2) + pow(diff_y, 2));
+		}
+		bool operator() (Point A, Point B) { return (A.distance < B.distance); }
+	};
+
 	class Object {
 	public:
 		friend class Environment;
-
+		
 		double x = 0;
 		double y = 0;
 		double orientation = 0;
 		Shape shape = Shape::POINT;
 		std::string name = "Object";
 
-		Object(double i_x, double i_y, double i_orient = 0,
+		Object(double t_x, double t_y, double i_orient = 0,
 			Shape shape = Shape::POINT,
-			std::string i_name = "Object") :
-			x(i_x), y(i_y), orientation(i_orient), name(i_name) {}
+			std::string i_name = "Object"): x(t_x), y(t_y),
+			orientation(i_orient), name(i_name) {}
 
 		double return_x() { return x; }
 		double return_y() { return y; }
@@ -40,13 +57,26 @@ namespace rmas {
 		double width = 0;
 		double length = 0;
 		const Shape shape = Shape::RECTANGLE;
+		Point top_right;
+		Point top_left;
+		Point bottom_right;
+		Point bottom_left;
 
 		Rectangle(double i_x = 0, double i_y = 0, double i_width = 0,
 			double i_length = 0, double orientation = 0,
 			std::string i_name = "Rectangle"): 
 			Object(i_x, i_y, orientation, shape, i_name), 
-			width(i_width), length(i_length) {}
+			width(i_width), 
+			length(i_length), 
 
+			//If the rectangle's orientation is 0, then the top right point the vertex of a right triangle with a 45 degree angle.
+			//Similarly for the other points increasing increments of 90 degrees. All values are converted to radians to use the
+			//sin and cos functions from math.h
+			top_right(cos(orientation + convert_deg * PI / 4), sin(orientation + convert_deg * PI / 4)), 
+			top_left(cos(orientation + convert_deg * 3 * PI / 4), sin(orientation + convert_deg * 3 * PI / 4)), 
+			bottom_right(cos(orientation + convert_deg * 5 * PI / 4), sin(orientation + convert_deg * 5 * PI / 4)),
+			bottom_left(cos(orientation + convert_deg * 7 * PI / 4), sin(orientation + convert_deg * 7 * PI / 4)) {}
+		
 		double return_width() { return width; }
 		double return_length() { return length; }
 	};

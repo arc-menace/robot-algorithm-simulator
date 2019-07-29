@@ -18,6 +18,7 @@
 #define MAX_WHEEL_DIAM 6.0
 #define DEFAULT_OBSTACLE_RADIUS 0.75
 #define MARGIN_OF_ERROR 0.000001
+#define PI 3.14159265358979323846264338327
 const double convert_deg = 0.0174532925;
 
 #endif

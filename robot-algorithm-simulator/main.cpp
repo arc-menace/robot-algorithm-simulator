@@ -10,7 +10,7 @@ void define_mothership(Mothership &mothership, bool advanced = false);
 
 
 int main() {
-	Robot robot;
+	Robot robot(true);
 	Rectangle map;
 	std::vector<Block> blocks{};
 	std::vector<Obstacle> obstacles{};
@@ -20,11 +20,13 @@ int main() {
 
 	for (;;) {
 		std::cout << "1)\tRun Simulation\n" << "2)\tChange Settings\n"
-			<< "3)\tChange Advanced Settings\n" << "4)\t Run in Developer Mode\n"
+			<< "3)\tChange Advanced Settings\n" << "4)\tRun in Developer Mode\n"
 			<< "\nSelection: ";
 		int choice;
 		std::cin >> choice;
 		if (std::cin.fail()) {
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			std::cerr << ERROR_INVALID_INPUT << std::endl;
 			continue;
 		}
@@ -50,6 +52,7 @@ int main() {
 			std::cerr << ERROR_INVALID_INPUT << std::endl;
 			continue;
 		}
+		break;
 	}
 
 	//Define blocks (in environment if random)
@@ -125,29 +128,29 @@ int main() {
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)){
 				//Should eventually be forward
-				environment.backward(scale);
+				environment.backward(1);
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)){
 				//Should eventually be backward
-				environment.forward(scale);
+				environment.forward(1);
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)){
-				environment.left(scale);
+				environment.left(1);
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)){
-				environment.right(scale);
+				environment.right(1);
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q)) {
-				environment.diagonal_left_up(scale);
+				environment.diagonal_left_up(1);
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E)) {
-				environment.diagonal_right_up(scale);
+				environment.diagonal_right_up(1);
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z)) {
-				environment.diagonal_left_down(scale);
+				environment.diagonal_left_down(1);
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::C)) {
-				environment.diagonal_right_down(scale);
+				environment.diagonal_right_down(1);
 			}
 		}
 		
