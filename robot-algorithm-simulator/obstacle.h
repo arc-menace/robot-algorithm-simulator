@@ -11,7 +11,7 @@ namespace rmas {
 		bool has_been_hit = false;
 	public:
 		Obstacle(double i_x, double i_y, double radius = DEFAULT_OBSTACLE_RADIUS): 
-			Circle(i_x, i_y, radius) {}
+			Circle(i_x, i_y, radius, "Obstacle") {}
 	};
 }
 

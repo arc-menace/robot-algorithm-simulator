@@ -154,6 +154,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="check_input.h" />
+    <ClCompile Include="define_map.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="define_robot.cpp" />
   </ItemGroup>

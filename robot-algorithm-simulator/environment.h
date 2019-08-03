@@ -38,14 +38,53 @@ namespace rmas {
 		//Mothership generation
 		std::vector<Obstacle> obstacles;
 		
+
+		double dist_btwn_pts(Point a, Point b) {
+			double diff_x = a.return_x() - b.return_x();
+			double diff_y = a.return_y() - b.return_y();
+			return sqrt(pow(diff_x, 2) + pow(diff_y, 2));
+		}
+
 		//==============================================
 		//	Block Generation Functions
 		//==============================================
-		void generate_blocks(int num_blocks) {
-			srand(time(0));
+		void generate_blocks(int num_blocks) { //needs to be cleaned up
+			srand(static_cast<unsigned> (time(0)));
+			if (num_blocks <= 0) { return; }
 			for (int i = 0; i < num_blocks; i++) {
-				int rand_x = rand() % 84 + 6;
-				int rand_y = rand() % 84 + 6;
+				bool next = false;
+				int rand_x = 6 + static_cast<double> (rand()) / (static_cast<double> (RAND_MAX / (90 - 6)));
+				int rand_y = 6 + static_cast<double> (rand()) / (static_cast<double> (RAND_MAX / (90 - 6)));
+				if (i >= 1) {
+					Point point(rand_x, rand_y);
+					for (int j = 0; j < i; j++) {
+						Point block(blocks[j].return_x(), blocks[j].return_y());
+						if (dist_btwn_pts(point, block) <= 6) {
+							i--;//redo this block
+							next = true;
+							break;
+						}
+					}
+					if (next) { continue; }
+					if (obstacles.size() > 0) {
+						for (int j = 0; j < i; j++) {
+							Point obstacle(obstacles[j].return_x(), obstacles[j].return_y());
+							if (dist_btwn_pts(point, obstacle) <= 6) {
+								i--;//redo this block
+								next = true;
+								break;
+							}
+						}
+					}
+					if (next) { continue; }
+					Point robot_center(robot.return_x(), robot.return_y()); 
+					//Fix so that it checks intersection with a square not a circle
+					if (dist_btwn_pts(robot_center, point) <= 6 + (blocks[0].return_width() / 2)) {
+						i--;//redo this block
+						continue;
+					}
+				}
+				
 				//Set max and min to be edges of map taking the size of the obstacle into account
 				blocks.push_back(Block(rand_x, rand_y, rand_x, rand_y, 'A', 0));
 				block_creation_log.add_event(Event::Block_Creation(index++, blocks[i]));
@@ -58,7 +97,48 @@ namespace rmas {
 		//==============================================
 		//	Obstacle Generation Functions
 		//==============================================
+		void generate_obstacles(int num_obstacles) {
+			if (num_obstacles <= 0) { return; }
+			for (int i = 0; i < num_obstacles; i++) {
+				bool next = false;
+				int rand_x = 6 + static_cast<double> (rand()) / (static_cast<double> (RAND_MAX / (90 - 6)));
+				int rand_y = 6 + static_cast<double> (rand()) / (static_cast<double> (RAND_MAX / (90 - 6)));
+				if (i >= 1) {
+					Point point(rand_x, rand_y);
+					for (int j = 0; j < i; j++) {
+						Point obstacle(obstacles[j].return_x(), obstacles[j].return_y());
+						if (dist_btwn_pts(point, obstacle) <= 6) {
+							i--;//redo this block
+							next = true;
+							break;
+						}
+					}
+					if (next) { continue; }
+					if (blocks.size() > 0) {
+						for (int j = 0; j < blocks.size(); j++) {
+							Point block(blocks[j].return_x(), blocks[j].return_y());
+							if (dist_btwn_pts(point, block) <= 6) {
+								i--;//redo this block
+								next = true;
+								break;
+							}
+						}
+					}
+					if (next) { continue; }
+					Point robot_center(robot.return_x(), robot.return_y());
+					//Fix so that it checks intersection with a square not a circle
+					if (dist_btwn_pts(robot_center, point) <= 6 + (blocks[0].return_width() / 2)) {
+						i--;//redo this block
+						continue;
+					}
+				}
 
+				//Set max and min to be edges of map taking the size of the obstacle into account
+				//make these obstacle logs
+				obstacles.push_back(Obstacle(rand_x, rand_y));
+				obst_creation_log.add_event(Event::Obstacle_Creation(index++, obstacles[i]));
+			}
+		}
 		//==============================================
 		//	Obstacle Movement Functions
 		//==============================================
@@ -67,12 +147,10 @@ namespace rmas {
 		//	Shape Intersection Function
 		//==============================================
 		
-
-		bool intersect_circle(Obstacle obstacle) { //Untested
+		
+		bool collision_circle(Obstacle obstacle) { //Untested
 			
 			//Check if the circle intersects any of the corners of the robot
-			
-		
 			std::vector<Point> points;
 			points.push_back(robot.top_right);
 			points.push_back(robot.top_left);
@@ -87,7 +165,7 @@ namespace rmas {
 			}
 
 			//Sort the points by distance away from the obstacle
-			std::sort(points.begin(), points.end(), points[0]);
+			std::sort(points.begin(), points.end(), less_than());
 
 			double m = (points[0].x - points[1].x) / (points[0].y - points[1].y);
 			double b = points[0].y - (m * points[0].x);
@@ -98,8 +176,8 @@ namespace rmas {
 			double new_x = (b - b_perp) / (m_perp - m);
 			double new_y = m_perp * new_x + b_perp;
 
-			double diff_x = fabs(obst_center.x + new_x);
-			double diff_y = fabs(obst_center.y + new_y);
+			double diff_x = obst_center.x - new_x;
+			double diff_y = obst_center.y - new_y;
 			double distance = sqrt(pow(diff_x, 2) + pow(diff_y, 2));
 
 			if (distance <= obstacle.return_radius()) { return true; }
@@ -108,6 +186,7 @@ namespace rmas {
 		
 		bool intersect_rect(Robot robot, Rectangle& rect) {
 			bool intersects = false;
+
 			return intersects;
 		}
 
@@ -115,6 +194,7 @@ namespace rmas {
 		Log <Event::Move> move_log;
 		Log <Event::Block_Creation> block_creation_log;
 		Log <Event::Robot_Creation> robot_creation_log;
+		Log <Event::Obstacle_Creation> obst_creation_log;
 
 		Environment(Robot &main_robot, Rectangle &i_map, 
 			int num_blocks = 0, int num_obstacles = 0, 
@@ -123,10 +203,15 @@ namespace rmas {
 			move_log.add_event(Event::Move(index, robot), true); //Set initial poisition
 			robot_creation_log.add_event(Event::Robot_Creation(index++, robot));
 			generate_blocks(num_blocks);
+			generate_obstacles(num_obstacles);
 		}
 
 		Block return_block(int ind) {
 			return blocks[ind];
+		}
+
+		Obstacle return_obst(int ind) {
+			return obstacles[ind];
 		}
 		//==============================================
 		//	Robot Movement Functions
@@ -169,21 +254,49 @@ namespace rmas {
 
 		void forward(double num_inches) { //X and Y are the adjacent and opposite sides of a triangle 
 										  //with hypotenuse num_inches and theta orientation
-			robot.y += num_inches * sin(robot.orientation * convert_deg);
-			robot.x += num_inches * cos(robot.orientation * convert_deg);
-			move_log.add_event(Event::Move(index++, robot));
+			double increment = 0;
+			bool collision = false;
+			while (increment <= num_inches) {
+				for (int i = 0; i < obstacles.size(); i++) {
+					if (collision_circle(obstacles[i])) {
+						obstacles[i].has_been_hit = true;
+						collision = true;
+						std::cout << "COLLISION" << std::endl;
+					}
+				}
+				if (collision) { break; }
+				robot.y += increment * sin(robot.orientation * convert_deg);
+				robot.x += increment * cos(robot.orientation * convert_deg);
+				move_log.add_event(Event::Move(index++, robot));
+				increment += 0.01;
+			}
+			
 		}
 
 		void backward(double num_inches) { //Same math as forward movement except... backwards...
-			robot.y -= num_inches * sin(robot.orientation * convert_deg);
-			robot.x -= num_inches * cos(robot.orientation * convert_deg);
-			move_log.add_event(Event::Move(index++, robot));
+			double increment = 0;
+			bool collision = false;
+			while (increment <= num_inches) {
+				for (int i = 0; i < obstacles.size(); i++) {
+					if (collision_circle(obstacles[i])) {
+						obstacles[i].has_been_hit = true;
+						collision = true;
+						std::cout << "COLLISION" << std::endl;
+					}
+				}
+				if (collision) { break; }
+				robot.y -= increment * sin(robot.orientation * convert_deg);
+				robot.x -= increment * cos(robot.orientation * convert_deg);
+				move_log.add_event(Event::Move(index++, robot));
+				increment += 0.01;
+			}
+			
 		}
 
 		void right(double num_inches) {
 			if (robot.is_mechanum) {
 				robot.x += num_inches * sin(robot.orientation * convert_deg);
-				robot.y += num_inches * cos(robot.orientation * convert_deg);
+				robot.y -= num_inches * cos(robot.orientation * convert_deg);
 				move_log.add_event(Event::Move(index++, robot));
 			}
 			else {
@@ -197,7 +310,7 @@ namespace rmas {
 		void left(double num_inches) {
 			if (robot.is_mechanum) {
 				robot.x -= num_inches * sin(robot.orientation * convert_deg);
-				robot.y -= num_inches * cos(robot.orientation * convert_deg);
+				robot.y += num_inches * cos(robot.orientation * convert_deg);
 				move_log.add_event(Event::Move(index++, robot));
 			}
 			else {

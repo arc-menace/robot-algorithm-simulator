@@ -36,18 +36,20 @@ namespace rmas {
 		Robot(bool i_is_mechanum = false, 
 			double i_x = DEFAULT_ROBOT_X, 
 			double i_y = DEFAULT_ROBOT_Y, 
-			double i_width = DEFAULT_ROBOT_WIDTH, 
-			double i_length = DEFAULT_ROBOT_LENGTH, 
+			double i_width = MAX_ROBOT_WIDTH, 
+			double i_length = MAX_ROBOT_LENGTH, 
 			double i_orientation = DEFAULT_START_ORIENTATION, 
 			double i_sensing_distance = MAX_SENSE_DIST, 
-			double i_sense_angle = 360.0, 
-			double i_wheel_diameter = 0):
+			double i_sense_angle = DEFAULT_SENSE_ANGLE, 
+			double i_wheel_diameter = DEFAULT_WHEEL_DIAM):
 			Rectangle(i_x, i_y, i_width, i_length, i_orientation, "Robot" ),
 			starting_x(i_x), starting_y(i_y), is_mechanum(i_is_mechanum),
 			sensing_distance(i_sensing_distance), sensing_angle(i_sense_angle),
 			wheel_diameter(i_wheel_diameter) {}
 
 		double return_sensing_distance() { return sensing_distance; }
+		bool return_mech() { return is_mechanum; }
+
 	};
 }
 

@@ -9,5 +9,6 @@
 #include "log.h"
 #include "event.h"
 #include "mothership.h"
+#include "check_input.h"
 
 #endif

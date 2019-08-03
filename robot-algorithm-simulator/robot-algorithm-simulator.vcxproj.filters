@@ -21,6 +21,12 @@
     <ClCompile Include="define_robot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="check_input.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="define_map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rmas6219.h">

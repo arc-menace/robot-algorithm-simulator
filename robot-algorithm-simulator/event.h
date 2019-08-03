@@ -102,6 +102,24 @@ namespace Event {
 			return;
 		}
 	};
+
+	class Obstacle_Creation {
+	private:
+		int index = 0;
+		rmas::Obstacle obst;
+	public:
+		Obstacle_Creation(int ind, rmas::Obstacle i_obst) : obst(i_obst) {
+			index = ind;
+		}
+
+		void print_event() {
+			std::cout << index << "\tAn " << obst.return_name() << " has been created at (" << obst.return_x() << "," << obst.return_y() << ")" << std::endl;
+		}
+
+		void write_event() {
+			return;
+		}
+	};
 }
 
 #endif

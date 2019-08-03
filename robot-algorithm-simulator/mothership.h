@@ -3,8 +3,9 @@
 #define MOTHERHSHIP_H
 
 namespace rmas {
-	class Mothership {
-
+	class Mothership : public Object {
+	private:
+		Shape shape = Shape::COMPOUND;
 	};
 }
 

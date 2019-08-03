@@ -22,13 +22,20 @@ namespace rmas {
 		double distance = 0;
 		Point(double t_x = 0, double t_y = 0) : x(t_x), y(t_y) {}
 
+		double return_x() { return x; }
+		double return_y() { return y; }
+
 		void set_distance(Point b) {
-			double diff_x = fabs(x + b.x);
-			double diff_y = fabs(y + b.y);
+			double diff_x = x - b.return_x();
+			double diff_y = y - b.return_y();
 			distance = sqrt(pow(diff_x, 2) + pow(diff_y, 2));
 		}
-		bool operator() (Point A, Point B) { return (A.distance < B.distance); }
 	};
+
+	struct less_than {
+		bool operator() (const Point& a, const Point& b) { return (a.distance > b.distance); }
+	};
+	
 
 	class Object {
 	public:
@@ -63,19 +70,19 @@ namespace rmas {
 		Point bottom_left;
 
 		Rectangle(double i_x = 0, double i_y = 0, double i_width = 0,
-			double i_length = 0, double orientation = 0,
+			double i_length = 0, double orient = 0,
 			std::string i_name = "Rectangle"): 
-			Object(i_x, i_y, orientation, shape, i_name), 
+			Object(i_x, i_y, orient, shape, i_name), 
 			width(i_width), 
 			length(i_length), 
 
 			//If the rectangle's orientation is 0, then the top right point the vertex of a right triangle with a 45 degree angle.
 			//Similarly for the other points increasing increments of 90 degrees. All values are converted to radians to use the
 			//sin and cos functions from math.h
-			top_right(cos(orientation + convert_deg * PI / 4), sin(orientation + convert_deg * PI / 4)), 
-			top_left(cos(orientation + convert_deg * 3 * PI / 4), sin(orientation + convert_deg * 3 * PI / 4)), 
-			bottom_right(cos(orientation + convert_deg * 5 * PI / 4), sin(orientation + convert_deg * 5 * PI / 4)),
-			bottom_left(cos(orientation + convert_deg * 7 * PI / 4), sin(orientation + convert_deg * 7 * PI / 4)) {}
+			top_right(x + (width / 2) * cos(orientation + convert_deg * PI / 4), y + (length / 2) * sin(orientation + convert_deg * PI / 4)), 
+			top_left(x + (width / 2) * cos(orientation + convert_deg * 3 * PI / 4), y + (length / 2) * sin(orientation + convert_deg * 3 * PI / 4)),
+			bottom_right(x + (width / 2) * cos(orientation + convert_deg * 5 * PI / 4), y + (length / 2) * sin(orientation + convert_deg * 5 * PI / 4)),
+			bottom_left(x + (width / 2) * cos(orientation + convert_deg * 7 * PI / 4), y + (length / 2) * sin(orientation + convert_deg * 7 * PI / 4)) {}
 		
 		double return_width() { return width; }
 		double return_length() { return length; }
@@ -96,13 +103,12 @@ namespace rmas {
 	public:
 		//This is a really sloppy way to do this, but will work for the time being
 		std::vector<Rectangle> rects;
-		std::vector<Circle> circs;
 		const Shape shape = Shape::COMPOUND;
 
 		Compound(double i_x, double i_y, double i_orientation, 
-			std::vector<Rectangle> i_rects, std::vector<Circle> i_circs): 
+			std::vector<Rectangle> i_rects): 
 			Object(i_x, i_y, i_orientation, Shape::COMPOUND, "Compound"),
-			rects(i_rects), circs(i_circs) {}
+			rects(i_rects) {}
 	};
 }
 
